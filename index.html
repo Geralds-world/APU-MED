@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APU | Emergency & First Aid Supplies</title>
+
+
+<style>
+* {margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#f8fafc;
+  color:#1e293b;
+  font-family:'Segoe UI',system-ui;
+  line-height:1.6
+}
+
+/* HEADER */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 50px;
+  background:#0b2c32d8;
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:4px solid #0ea5a4;
+  box-shadow:0 4px 16px rgba(14,165,164,0.15)
+}
+header h2{
+  color: #ffffff;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+text-shadow:
+  -2px 0 4px rgba(14,165,164,0.9),
+   2px 0 4px rgba(239,68,68,0.9);
+}
+
+nav{display:flex;gap:30px;align-items:center}
+nav a{
+  color:#ffffff;
+  text-decoration:none;
+  transition:.3s;
+  font-weight:500;
+  font-size:1.05rem
+}
+nav a:hover{color:#0ea5a4}
+
+/* HERO */
+.hero{
+  min-height:700px;
+  background:linear-gradient(135deg,rgba(14,165,164,0.15),rgba(59,130,246,0.1));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:50px;
+  position:relative;
+  overflow:hidden;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+.hero video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0.4}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:rgba(37, 41, 44, 0.85);
+
+}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero h1{
+  font-size:4rem;
+  font-weight:700;
+  margin-bottom:20px;
+  background:linear-gradient(135deg,#0ea5a4,#2563eb);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.2
+}
+.hero p{
+  font-size:1.8rem;
+  color:#ffffff;
+  margin-bottom:30px;
+  font-weight:300
+}
+
+.cta-button{
+  padding:18px 50px;
+  background:linear-gradient(90deg,#0ea5a4,#2563eb);
+  color:#ffffff;
+  border:none;
+  border-radius:8px;
+  font-size:1.2rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s
+}
+.cta-button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 20px 40px rgba(37,99,235,0.3)
+}
+
+/* SECTIONS */
+section{padding:80px 50px;max-width:1400px;margin:auto}
+section h2{
+  font-size:3rem;
+  margin-bottom:50px;
+  color:#0ea5a4;
+  border-bottom:3px solid #2563eb;
+  padding-bottom:20px;
+  letter-spacing:1px
+}
+section h3{font-size:1.8rem;margin-bottom:30px;color:#334155}
+
+/* ABOUT */
+.about-content{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:50px}
+.about-text h3{color:#0ea5a4;font-size:1.8rem;margin-bottom:25px}
+.about-text p{
+  font-size:1.1rem;
+  color:#475569;
+  margin-bottom:20px;
+  line-height:1.9
+}
+.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;margin-top:40px}
+.value-card{
+  background:#ffffff;
+  padding:30px;
+  border-radius:12px;
+  border-left:5px solid #0ea5a4;
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+  transition:.3s
+}
+.value-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 15px 40px rgba(14,165,164,0.25)
+}
+.value-card h4{color:#0ea5a4;margin-bottom:15px;font-size:1.3rem}
+.value-card p{color:#64748b;font-size:1rem;line-height:1.7}
+
+/* CATEGORIES */
+.category-section{margin-bottom:60px}
+.category-header{
+  background:linear-gradient(90deg,#e0f2fe,#f0fdfa);
+  padding:20px 25px;
+  border-radius:12px;
+  cursor:pointer;
+  border-left:5px solid #0ea5a4;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:.3s
+}
+.category-header:hover{
+  box-shadow:0 10px 25px rgba(14,165,164,0.2)
+}
+.category-header h3{color:#0ea5a4;margin:0;font-size:1.5rem}
+.category-toggle{color:#2563eb;font-weight:700;font-size:1.3rem;transition:.3s}
+.category-toggle.active{transform:rotate(180deg)}
+
+/* PRODUCTS */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:25px;
+  margin-top:30px;
+  overflow:visible;
+  transition:max-height .4s ease;
+  max-height:none
+}
+.products.collapsed{max-height:0;margin-top:0;overflow:hidden}
+.product{
+  background:#ffffff;
+  border-radius:14px;
+  padding:20px;
+  border:1px solid #e2e8f0;
+  box-shadow:0 10px 25px rgba(0,0,0,0.05);
+  transition:.3s
+}
+.product:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 45px rgba(37,99,235,0.25);
+  border-color:#0ea5a4
+}
+.product img{width:100%;height:220px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+.product.onthego-item img{height:320px}
+.product.trauma-item img{height:280px}
+.product.bandage-item img{height:280px}
+.product.refill-item img{height:160px}
+.product h4{color:#1e293b;margin:12px 0 8px;font-size:1.05rem;font-weight:600}
+.product strong{color:#0ea5a4;font-size:1.3rem;display:block;margin-bottom:15px}
+
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(90deg,#0ea5a4,#2563eb);
+  font-weight:700;
+  cursor:pointer;
+  color:#ffffff;
+  margin-top:10px;
+  transition:.3s;
+  text-transform:uppercase;
+  letter-spacing:0.5px
+}
+.btn:hover{opacity:0.95;transform:scale(1.02)}
+
+/* CART */
+.cart{
+  position:fixed;
+  right:0;
+  top:0;
+  width:380px;
+  height:100%;
+  background:#ffffff;
+  padding:25px;
+  transform:translateX(110%);
+  transition:.3s;
+  z-index:1000;
+  border-left:3px solid #0ea5a4;
+  box-shadow:-10px 0 30px rgba(0,0,0,0.15);
+  overflow-y:auto
+}
+.cart.active{transform:translateX(0)}
+.cart h3{color:#0ea5a4;margin-bottom:25px;font-size:1.5rem}
+.cart p{color:#334155;margin:12px 0}
+.warning{
+  color:#b45309;
+  background:#fffbeb;
+  padding:12px;
+  border-radius:6px;
+  border-left:4px solid #f59e0b;
+  font-weight:600;
+  font-size:0.95rem
+}
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:15px;
+  background:#f8fafc;
+  margin:12px 0;
+  border-radius:8px;
+  font-size:0.95rem;
+  gap:10px;
+  border-left:3px solid #0ea5a4
+}
+.cart-item-info{flex:1}
+.delete-btn{
+  background:#ef4444;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  border-radius:4px;
+  cursor:pointer;
+  font-size:0.8rem;
+  font-weight:600;
+  white-space:nowrap
+}
+.delete-btn:hover{background:#dc2626}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(90deg,rgba(14,165,164,0.1),rgba(37,99,235,0.1));
+  padding:50px;
+  text-align:center;
+  border-top:3px solid #0ea5a4;
+  color:#334155;
+  margin-top:60px
+}
+footer p{margin:8px 0;font-size:1rem;font-weight:500}
+footer strong{color:#0ea5a4}
+
+/* SEARCH BAR */
+.search-container{
+  display:flex;
+  gap:15px;
+  margin-bottom:40px;
+  max-width:500px
+}
+.search-input{
+  flex:1;
+  padding:12px 16px;
+  border:2px solid #e2e8f0;
+  border-radius:8px;
+  font-size:1rem;
+  transition:.3s
+}
+.search-input:focus{
+  outline:none;
+  border-color:#0ea5a4;
+  box-shadow:0 0 0 3px rgba(14,165,164,0.1)
+}
+.search-input::placeholder{color:#94a3b8}
+.clear-search{
+  padding:12px 20px;
+  background:#f1f5f9;
+  border:2px solid #e2e8f0;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+  color:#475569;
+  transition:.3s
+}
+.clear-search:hover{background:#e2e8f0}
+
+@media(max-width:1024px){
+.hero h1{font-size:2.8rem}
+.hero p{font-size:1.4rem}
+.cart{width:320px}
+section{padding:60px 30px}
+}
+
+@media(max-width:768px){
+.hero{min-height:500px}
+.hero h1{font-size:2rem}
+.hero p{font-size:1.2rem}
+.about-content{grid-template-columns:1fr}
+nav{gap:15px}
+section{padding:50px 20px}
+.products{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px}
+header{padding:15px 20px}
+header h2{font-size:1.5rem}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>APU</h2>
+  <nav>
+    <a href="#hero">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#products">Products</a>
+    <a href="#" onclick="toggleCart()">Cart 🛒</a>
+  </nav>
+</header>
+
+<section class="hero" id="hero">
+  <video autoplay muted loop playsinline id="heroVideo">
+  <source src="/images/APU - loading video.mp4" type="video/mp4">
+</video>
+  <div class="hero-content">
+    <h1>Real Emergencies. Real People. Real Solutions.</h1>
+    <p>Being Prepared Can Save a Life</p>
+    <button class="cta-button" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+      Browse Our Supplies
+    </button>
+  </div>
+</section>
+
+<section id="about">
+  <h2>About APU</h2>
+  <div class="about-content">
+    <div class="about-text">
+      <h3>Saving Lives, One Kit at a Time</h3>
+      <p>
+        At APU, we believe that preparation is the cornerstone of survival. Whether you're facing an unexpected injury, a workplace accident, or an emergency situation, having the right supplies on hand can mean the difference between a minor incident and a tragedy.
+      </p>
+      <p>
+        We serve communities across the nation, providing medical professionals, emergency responders, businesses, and concerned citizens with certified, high-quality first aid and emergency supplies. Our mission is simple: to ensure that when seconds count, you're ready.
+      </p>
+    </div>
+    <div class="values">
+      <div class="value-card">
+        <h4>🏥 Quality First</h4>
+        <p>Every product is certified and tested to meet international medical standards.</p>
+      </div>
+      <div class="value-card">
+        <h4>⚡ Always Ready</h4>
+        <p>Fast delivery and responsive support when you need us most.</p>
+      </div>
+      <div class="value-card">
+        <h4>👥 Community Care</h4>
+        <p>Supporting local communities with affordable, accessible emergency solutions.</p>
+      </div>
+      <div class="value-card">
+        <h4>📚 Education</h4>
+        <p>Partnering with first aid trainers to ensure you know how to use your supplies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="products">
+  <h2>First Aid & Emergency Supplies</h2>
+  
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search products or categories...">
+    <button class="clear-search" onclick="clearSearch()">Clear</button>
+  </div>
+
+  <!-- KITS SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🎒 First Aid Kits</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products kits-products" id="kitsList"></div>
+  </div>
+
+  <!-- ON-THE-GO SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🏃 On-The-Go Packs</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products onthego-products" id="onTheGoList"></div>
+  </div>
+
+  <!-- REFILLS SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>📋 First Aid Refills</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products refills-products" id="refillsList"></div>
+  </div>
+
+  <!-- TRAUMA SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🚑 Trauma & Emergency</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products trauma-products" id="traumaList"></div>
+  </div>
+
+  <!-- BANDAGES SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🩹 Bandages & Gauze</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products bandages-products" id="bandagesList"></div>
+  </div>
+
+  <!-- CONSUMABLES SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>💊 Consumables & Supplies</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products consumables-products" id="consumablesList"></div>
+  </div>
+
+  <!-- PAIN & COOLING SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>❄️ Pain & Cooling</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products cooling-products" id="coolingList"></div>
+  </div>
+
+  <!-- TOOLS SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🔧 Tools & Instruments</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products tools-products" id="toolsList"></div>
+  </div>
+
+  <!-- PLASTERS SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🩸 Plasters & Dressings</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products plasters-products" id="plastersList"></div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>APU</strong> - Emergency & First Aid Supplies</p>
+  <p>© 2026 All Rights Reserved | Ready. Prepared. Saving Lives.</p>
+  <p>For inquiries: <strong>+27 72 335 6685</strong></p>
+</footer>
+
+<div class="cart" id="cart">
+  <h3>Your Cart</h3>
+  <div id="cartItems"></div>
+  <p>Total: <strong style="color:#14b8a6">R<span id="total">0</span></strong></p>
+  <p class="warning" id="warning"></p>
+  <button class="btn" onclick="openDeliveryForm()">Proceed to Payment</button>
+  <button class="btn" style="background:linear-gradient(90deg,#64748b,#9ca3af);margin-top:10px" onclick="closeCart()">Close Cart</button>
+</div>
+
+<!-- Delivery Address Form Modal -->
+<div id="deliveryModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:200;align-items:center;justify-content:center">
+  <div style="background:white;padding:40px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+    <h2 style="color:#0ea5a4;margin-bottom:25px;text-align:center">Delivery Details</h2>
+    
+    <div style="margin-bottom:18px">
+      <label style="display:block;margin-bottom:8px;color:#334155;font-weight:600">Full Name *</label>
+      <input type="text" id="deliveryName" placeholder="Your full name" style="width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;transition:.3s" onfocus="this.style.borderColor='#0ea5a4'" onblur="this.style.borderColor='#e2e8f0'">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <label style="display:block;margin-bottom:8px;color:#334155;font-weight:600">Phone Number *</label>
+      <input type="tel" id="deliveryPhone" placeholder="Your phone number" style="width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;transition:.3s" onfocus="this.style.borderColor='#0ea5a4'" onblur="this.style.borderColor='#e2e8f0'">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <label style="display:block;margin-bottom:8px;color:#334155;font-weight:600">Street Address *</label>
+      <input type="text" id="deliveryAddress" placeholder="Street address" style="width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;transition:.3s" onfocus="this.style.borderColor='#0ea5a4'" onblur="this.style.borderColor='#e2e8f0'">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <label style="display:block;margin-bottom:8px;color:#334155;font-weight:600">Postal Code *</label>
+      <input type="text" id="deliveryPostal" placeholder="e.g., 0157" style="width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;transition:.3s" onfocus="this.style.borderColor='#0ea5a4'" onblur="this.style.borderColor='#e2e8f0'">
+    </div>
+
+    <div style="margin-bottom:25px">
+      <label style="display:block;margin-bottom:8px;color:#334155;font-weight:600">Area / Suburb</label>
+      <input type="text" id="deliveryArea" placeholder="e.g., Knoppieslaagte" style="width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;transition:.3s" onfocus="this.style.borderColor='#0ea5a4'" onblur="this.style.borderColor='#e2e8f0'">
+    </div>
+
+    <div style="margin-bottom:25px;padding:15px;background:#f0fdf4;border-left:4px solid #10b981;border-radius:6px">
+      <p style="color:#166534;font-size:0.95rem;margin:0"><strong>ℹ️ Mnandi Area:</strong> Pick-up FREE or Courier from R50</p>
+    </div>
+
+    <label style="display:block;margin-bottom:15px;color:#334155;font-weight:600">Delivery Method *</label>
+    <div style="display:grid;gap:12px;margin-bottom:25px">
+      <label style="display:flex;align-items:center;padding:12px;border:2px solid #e2e8f0;border-radius:8px;cursor:pointer;transition:.3s" onmouseover="this.style.borderColor='#0ea5a4'" onmouseout="this.style.borderColor='#e2e8f0'">
+        <input type="radio" name="delivery" value="pickup" onclick="updateDeliveryEstimate()" style="margin-right:12px;cursor:pointer">
+        <span><strong>📍 Pick-up (FREE)</strong><br><span style="font-size:0.9rem;color:#64748b">Mnandi area - will be shared via WhatsApp</span></span>
+      </label>
+      <label style="display:flex;align-items:center;padding:12px;border:2px solid #e2e8f0;border-radius:8px;cursor:pointer;transition:.3s" onmouseover="this.style.borderColor='#0ea5a4'" onmouseout="this.style.borderColor='#e2e8f0'">
+        <input type="radio" name="delivery" value="courier" onclick="updateDeliveryEstimate()" style="margin-right:12px;cursor:pointer">
+        <span><strong>📦 Courier Delivery</strong><br><span style="font-size:0.9rem;color:#64748b">Estimated fee will show below</span></span>
+      </label>
+    </div>
+
+    <div id="courierEstimate" style="margin-bottom:25px;padding:15px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:6px;display:none">
+      <p style="color:#92400e;font-size:0.95rem;margin:0"><strong>📦 Estimated Courier Fee:</strong> <span id="estimateText">Based on your location (Mnandi: R50, Nearby: R100, Far: R200)</span></p>
+    </div>
+
+    <p id="deliveryWarning" style="color:#dc2626;margin-bottom:15px;font-weight:600;text-align:center"></p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <button onclick="closeDeliveryForm()" style="padding:14px;background:#e2e8f0;border:none;border-radius:8px;cursor:pointer;font-weight:600;color:#334155;transition:.3s" onmouseover="this.style.background='#cbd5e1'" onmouseout="this.style.background='#e2e8f0'">Cancel</button>
+      <button onclick="submitDelivery()" style="padding:14px;background:#0ea5a4;border:none;border-radius:8px;cursor:pointer;font-weight:600;color:white;transition:.3s" onmouseover="this.style.background='#0d9488'" onmouseout="this.style.background='#0ea5a4'">Proceed</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SELLER_WHATSAPP = "27723356685";
+const MIN_ORDER = 150;
+const YOCO_BASE_LINK = "https://pay.yoco.com/apocalypse-unit";
+
+/* -------------------- ORDER REFERENCE -------------------- */
+function generateOrderRef(){
+  let last = parseInt(localStorage.getItem("apuOrderRef") || "0");
+  last++;
+  localStorage.setItem("apuOrderRef", last);
+  return `APU-${String(last).padStart(3, '0')}`;
+}
+
+/* -------------------- PAYMENT STATE -------------------- */
+let pendingOrder = null;
+
+const productCategories = {
+  kits: [
+    {name:"Animal First Aid Kit",price:65},
+    {name:"Vehicle First Aid Kit",price:180},
+    {name:"6 Man Boat First Aid Kit",price:180},
+    {name:"Gun & Stab Wound First Aid Kit",price:200},
+    {name:"Hikers First Aid Kit",price:325},
+    {name:"Household First Aid Kit",price:450},
+    {name:"ParaGear Tactical Pack - Basic (20 items)",price:480},
+    {name:"Emergency Roadside Kit - Small (33 items)",price:850}
+  ],
+  onthego: [
+    {name:"Stings On-The-Go Pack",price:165},
+    {name:"Eye Care On-The-Go Pack",price:165},
+    {name:"CPR On-The-Go Pack",price:165}
+  ],
+  refills: [
+    {name:"6 Man Boat Refill",price:80},
+    {name:"Regulation 3 First Aid Refills",price:260},
+    {name:"Regulation 7 First Aid Refills",price:null,onRequest:true}
+  ],
+  trauma: [
+    {name:"CPR Face Shield / Mask",price:20},
+    {name:"Plastic Splint (Interlocking)",price:20},
+    {name:"Elastic Tourniquet",price:30},
+    {name:"Burnshield Hydrogel 10ml",price:30},
+    {name:"Paragear Military Tourniquet",price:120},
+    {name:"Finger Splints 2pc",price:null,onRequest:true}
+  ],
+  bandages: [
+    {name:"Sterile Gauze 75x75mm (5pc)",price:3},
+    {name:"50mm Bandage",price:3.5},
+    {name:"75mm Bandage",price:4},
+    {name:"100mm Bandage",price:5},
+    {name:"Triangular Bandage",price:10},
+    {name:"Gauze Pads 50x50mm (20pc)",price:15},
+    {name:"Elastic Adhesive Bandage",price:28},
+    {name:"Athletic Bandage 50mm",price:25},
+    {name:"Gauze Pads 50x50mm (100pc)",price:30},
+    {name:"Kaolin Hemostatic Gauze",price:60}
+  ],
+  consumables: [
+    {name:"5ml Syringe Luer Slip",price:1.45},
+    {name:"10ml Syringe Luer Slip",price:2.20},
+    {name:"Alcohol Swabs 10/packet",price:3.50},
+    {name:"Gloves Single Pair Latex Powdered",price:4},
+    {name:"Gloves Single Pair Latex Powder Free",price:5},
+    {name:"Cotton Wool Balls (5pc)",price:6.5},
+    {name:"Cotton Earbuds (100pc)",price:15},
+    {name:"Latex Gloves (20pc)",price:48,options:["XS","S","M","L","XL","XXL"],optionLabel:"Size"},
+    {name:"Hi Care Medical Grade Nitrile Examination Gloves 100/box",price:110,options:["XS","S","M","L","XL","XXL"],optionLabel:"Size"},
+    {name:"5ml Syringe Luer Slip Box/100",price:135},
+    {name:"10ml Syringe Luer Slip Box/100",price:190},
+    {name:"10ml Syringe Luer Lock Box/100",price:200}
+  ],
+  cooling: [
+    {name:"All Stings Considered Sachet",price:5},
+    {name:"Cooling Patch",price:25},
+    {name:"All Stings Considered Box",price:20},
+    {name:"Instant Ice Pack",price:20},
+    {name:"Deep Freeze Gel 35g",price:45},
+    {name:"Deep Heat Rub 35g",price:65}
+  ],
+  tools: [
+    {name:"Tweezers Stainless Steel",price:12},
+    {name:"First Aid Scissors 19cm",price:40},
+    {name:"Rescue Universal Scissors Plus Holster (6 in 1 Multitool)",price:850}
+  ],
+  plasters: [
+    {name:"Breathable Dressing Pads (5pc) Approx 6x7cm",price:10},
+    {name:"Assorted Plasters Box 20pc (5 Different Sizes)",price:25},
+    {name:"Neon Plasters Box 40pc",price:25}
+  ]
+};
+
+let cart=[];
+let allCategories = ['kits', 'onthego', 'refills', 'trauma', 'bandages', 'consumables', 'cooling', 'tools', 'plasters'];
+
+// Image mapping
+const imageMap = {
+  "Animal First Aid Kit": "images/Animal first aid.png",
+  "Vehicle First Aid Kit": "images/Vechle first aid kit.PNG",
+  "Gun & Stab Wound First Aid Kit": "images/gun and stab kit.png",
+  "Hikers First Aid Kit": "images/hikers first aid.PNG",
+  "6 Man Boat First Aid Kit": "images/6 man boat kit.PNG",
+  "6 Man Boat Refill": "images/6 man boat kit.PNG",
+  "ParaGear Tactical Pack - Basic (20 items)": "images/para gear tac pac.PNG",
+  "Household First Aid Kit": "images/Household kit.PNG",
+  "Emergency Roadside Kit - Small (33 items)": "images/Roadside kit.PNG",
+  "Stings On-The-Go Pack": "images/Stings on the go.PNG",
+  "Eye Care On-The-Go Pack": "images/Eye care on the go.PNG",
+  "CPR On-The-Go Pack": "images/CPR on the go.PNG",
+  "Regulation 3 First Aid Refills": "images/Regulation 3 refill.PNG",
+  "Regulation 7 First Aid Refills": "images/Regulation 7 refill.PNG",
+  "CPR Face Shield / Mask": "images/CPR face sheild.PNG",
+  "Plastic Splint (Interlocking)": "images/Splints interlocking.PNG",
+  "Elastic Tourniquet": "images/Tournet elastic.PNG",
+  "Burnshield Hydrogel 10ml": "images/burn 10ml hydrogel.PNG",
+  "Paragear Military Tourniquet": "images/Tournet para gear.PNG",
+  "Finger Splints 2pc": "images/Finger splint 2pc.PNG",
+  "Triangular Bandage": "images/triangular bandage.PNG",
+  "Gauze Pads 50x50mm (20pc)": "images/gauze 50x50 20pc.PNG",
+  "Gauze Pads 50x50mm (100pc)": "images/gauze 50x50 100.PNG",
+  "Sterile Gauze 75x75mm (5pc)": "images/75x75 sterile 5pc.PNG",
+  "Kaolin Hemostatic Gauze": "images/hemostatic gauze.PNG",
+  "Elastic Adhesive Bandage": "images/Elastic ad bandage.PNG",
+  "Athletic Bandage 50mm": "images/Athletic bandage.PNG",
+  "50mm Bandage": "images/all sizes of bandages.PNG",
+  "75mm Bandage": "images/all sizes of bandages.PNG",
+  "100mm Bandage": "images/all sizes of bandages.PNG",
+  "All Stings Considered Sachet": "images/All Stings Considered Sachet.PNG",
+  "Cooling Patch": "images/Cooling patch.PNG",
+  "All Stings Considered Box": "images/All Stings Considered Box.PNG",
+  "Instant Ice Pack": "images/Ins ice pack.PNG",
+  "Deep Freeze Gel 35g": "images/Deep Freeze Gel 35g.PNG",
+  "Deep Heat Rub 35g": "images/Deep Heat Rub 35g.PNG",
+  "Tweezers Stainless Steel": "images/Tweezers.PNG",
+  "First Aid Scissors 19cm": "images/First aid scissors 19cm.PNG",
+  "Rescue Universal Scissors Plus Holster (6 in 1 Multitool)": "images/Rescue uni scissors.PNG",
+  "Breathable Dressing Pads (5pc) Approx 6x7cm": "images/Breathable Dressing Pads (5pc).PNG",
+  "Assorted Plasters Box 20pc (5 Different Sizes)": "images/assorted plasters.PNG",
+  "Neon Plasters Box 40pc": "images/neon plaster.PNG",
+  "5ml Syringe Luer Slip": "images/5ml Syringe Luer Slip single.PNG",
+  "10ml Syringe Luer Slip": "images/10ml Syringe Luer Slip single.PNG",
+  "5ml Syringe Luer Slip Box/100": "images/5ml Syringe Luer Slip single.PNG",
+  "10ml Syringe Luer Slip Box/100": "images/10ml Syringe Luer Slip single.PNG",
+  "10ml Syringe Luer Lock Box/100": "images/10ml Syringe Luer Lock Box100.PNG",
+  "Alcohol Swabs 10/packet": "images/Alcohol Swabs 10packet.PNG",
+  "Gloves Single Pair Latex Powdered": "images/Gloves Single Pair Latex Powdered.PNG",
+  "Gloves Single Pair Latex Powder Free": "images/Gloves Single Pair Latex Powder Free.PNG",
+  "Latex Gloves (20pc)": "images/Latex Gloves (20pc).PNG",
+  "Cotton Wool Balls (5pc)": "images/Cotton Wool Balls (5pc).PNG",
+  "Cotton Earbuds (100pc)": "images/Cotton Earbuds (100pc).PNG",
+  "Hi Care Medical Grade Nitrile Examination Gloves 100/box": "images/Nitrile Examination Gloves 100 box.PNG"
+};
+
+function getProductImage(productName){
+  return imageMap[productName] || "https://images.unsplash.com/photo-1580281657521-12a6c38d5b00?auto=format&fit=crop&w=600&q=60";
+}
+
+const cartEl=document.getElementById("cart");
+const cartItems=document.getElementById("cartItems");
+const totalEl=document.getElementById("total");
+const warningEl=document.getElementById("warning");
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener('input', filterProducts);
+
+function filterProducts(){
+  const query = searchInput.value.toLowerCase();
+  
+  if(!query){
+    renderAllProducts();
+    return;
+  }
+  
+  allCategories.forEach(cat => {
+    const filtered = productCategories[cat].filter(p => 
+      p.name.toLowerCase().includes(query)
+    );
+    
+    const containerId = getCategoryContainerId(cat);
+    const container = document.getElementById(containerId);
+    
+    if(filtered.length > 0){
+      renderProducts(filtered, containerId);
+      container.parentElement.style.display = 'block';
+    } else {
+      container.parentElement.style.display = 'none';
+    }
+  });
+}
+
+function getCategoryContainerId(cat){
+  const map = {
+    'kits': 'kitsList',
+    'onthego': 'onTheGoList',
+    'refills': 'refillsList',
+    'trauma': 'traumaList',
+    'bandages': 'bandagesList',
+    'consumables': 'consumablesList',
+    'cooling': 'coolingList',
+    'tools': 'toolsList',
+    'plasters': 'plastersList'
+  };
+  return map[cat];
+}
+
+function clearSearch(){
+  searchInput.value = '';
+  renderAllProducts();
+}
+
+function toggleCart(){cartEl.classList.toggle("active")}
+
+function openCart(){cartEl.classList.add("active")}
+
+function closeCart(){cartEl.classList.remove("active")}
+
+function toggleCategory(header){
+  const toggle = header.querySelector('.category-toggle');
+  const products = header.nextElementSibling;
+  toggle.classList.toggle('active');
+  products.classList.toggle('collapsed');
+}
+
+function renderProducts(products, containerId){
+  const container = document.getElementById(containerId);
+  const isOnTheGo = containerId.includes('onthego');
+  const isTrauma = containerId.includes('trauma');
+  const isBandage = containerId.includes('bandage');
+  const isRefill = containerId.includes('refill');
+  
+  container.innerHTML = products.map((p, idx) => {
+    const productId = `${containerId}-${idx}`;
+    let priceDisplay = p.onRequest ? "Price on Request" : `R${p.price.toFixed(2)}`;
+    const imageUrl = getProductImage(p.name);
+    let productClass = 'product';
+    if(isOnTheGo) productClass += ' onthego-item';
+    if(isTrauma) productClass += ' trauma-item';
+    if(isBandage) productClass += ' bandage-item';
+    if(isRefill) productClass += ' refill-item';
+    
+    let productHTML = `
+      <div class="${productClass}">
+        <img src="${imageUrl}" alt="${p.name}">
+        <h4>${p.name}</h4>
+        <strong>${priceDisplay}</strong>`;
+    
+    if(p.options && p.options.length > 0){
+      productHTML += `
+        <select id="${productId}-select" style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:6px;margin-top:10px">
+          <option value="">Choose ${p.optionLabel || "Option"}...</option>`;
+      p.options.forEach(opt => {
+        productHTML += `<option value="${opt}">${opt}</option>`;
+      });
+      productHTML += `</select>`;
+    }
+    
+    if(!p.onRequest){
+      productHTML += `<button class="btn" id="btn-${productId}" onclick="addToCartWithOption('${productId}', '${p.name}', ${p.price})">Add to Cart</button>`;
+    } else {
+      productHTML += `<button class="btn" onclick="alert('Please contact us for pricing')">Inquire</button>`;
+    }
+    
+    productHTML += `</div>`;
+    return productHTML;
+  }).join("");
+}
+
+function renderAllProducts(){
+  renderProductCategory('kits', 'kitsList');
+  renderProductCategory('onthego', 'onTheGoList');
+  renderProductCategory('refills', 'refillsList');
+  renderProductCategory('trauma', 'traumaList');
+  renderProductCategory('bandages', 'bandagesList');
+  renderProductCategory('consumables', 'consumablesList');
+  renderProductCategory('cooling', 'coolingList');
+  renderProductCategory('tools', 'toolsList');
+  renderProductCategory('plasters', 'plastersList');
+}
+
+function renderProductCategory(categoryKey, containerId){
+  const products = productCategories[categoryKey];
+  renderProducts(products, containerId);
+}
+
+function addToCartWithOption(productId, name, price){
+  const btn = document.getElementById(`btn-${productId}`);
+  if(btn){
+    const originalText = btn.textContent;
+    btn.textContent = '⏳ Adding...';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+  }
+
+  const selectElement = document.getElementById(`${productId}-select`);
+  const selectedOption = selectElement ? selectElement.value : null;
+  
+  if(selectElement && !selectedOption){
+    alert('Please select an option');
+    if(btn){
+      btn.textContent = 'Add to Cart';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+    return;
+  }
+  
+  let cartItemName = name;
+  let itemPrice = price;
+  
+  if(selectedOption){
+    cartItemName = `${name} (${selectedOption})`;
+    if(selectedOption.includes('Lock')){
+      itemPrice = 200;
+    } else if(selectedOption.includes('R190')){
+      itemPrice = 190;
+    }
+  }
+  
+  const ex = cart.find(x => x.name === cartItemName);
+  if(ex) ex.qty++;
+  else cart.push({name: cartItemName, price: itemPrice, qty: 1});
+  
+  renderCart();
+  openCart();
+
+  if(btn){
+    setTimeout(() => {
+      btn.textContent = 'Add to Cart';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }, 600);
+  }
+}
+
+function renderCart(){
+  let total=0;
+  cartItems.innerHTML=cart.map((i,idx)=>{
+    const sub=i.qty*i.price; total+=sub;
+    return `<div class="cart-item">
+      <div class="cart-item-info"><strong>${i.qty}x</strong> ${i.name} — <span style="color:#14b8a6">R${sub.toFixed(2)}</span></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button style="width:28px;height:28px;padding:0;background:#e2e8f0;border:none;border-radius:4px;cursor:pointer;font-weight:bold;color:#334155;transition:.2s" onmouseover="this.style.background='#cbd5e1'" onmouseout="this.style.background='#e2e8f0'" onclick="decreaseQty(${idx})">−</button>
+        <button style="width:28px;height:28px;padding:0;background:#e2e8f0;border:none;border-radius:4px;cursor:pointer;font-weight:bold;color:#334155;transition:.2s" onmouseover="this.style.background='#cbd5e1'" onmouseout="this.style.background='#e2e8f0'" onclick="increaseQty(${idx})">+</button>
+        <button class="delete-btn" onclick="removeFromCart(${idx})">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+  totalEl.textContent=total.toFixed(2);
+  warningEl.textContent=total<MIN_ORDER?`Minimum order is R${MIN_ORDER}`:"";
+}
+
+function increaseQty(idx){
+  cart[idx].qty++;
+  renderCart();
+}
+
+function decreaseQty(idx){
+  if(cart[idx].qty>1) cart[idx].qty--;
+  else removeFromCart(idx);
+  renderCart();
+}
+
+function removeFromCart(idx){
+  cart.splice(idx,1);
+  renderCart();
+}
+
+function openDeliveryForm(){
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  if(total<MIN_ORDER){warningEl.textContent=`Minimum order is R${MIN_ORDER}`;return;}
+  document.getElementById('deliveryModal').style.display='flex';
+}
+
+function closeDeliveryForm(){
+  document.getElementById('deliveryModal').style.display='none';
+  document.getElementById('deliveryWarning').textContent='';
+}
+
+function isMnandiArea(postal,area){
+  postal=postal.trim().toLowerCase();
+  area=area.trim().toLowerCase();
+  return postal==='0157' || area.includes('knoppieslaagte');
+}
+
+function updateDeliveryEstimate(){
+  const delivery=document.querySelector('input[name="delivery"]:checked')?.value;
+  const estimate=document.getElementById('courierEstimate');
+  if(delivery==='courier'){
+    estimate.style.display='block';
+  }else{
+    estimate.style.display='none';
+  }
+}
+
+function getCourierFee(postal,area){
+  if(isMnandiArea(postal,area)) return 50;
+  return 100;
+}
+
+function submitDelivery(){
+  const name=document.getElementById('deliveryName').value.trim();
+  const phone=document.getElementById('deliveryPhone').value.trim();
+  const address=document.getElementById('deliveryAddress').value.trim();
+  const postal=document.getElementById('deliveryPostal').value.trim();
+  const area=document.getElementById('deliveryArea').value.trim();
+  const delivery=document.querySelector('input[name="delivery"]:checked')?.value;
+  const warning=document.getElementById('deliveryWarning');
+
+  warning.textContent='';
+  if(!name||!phone||!address||!postal||!delivery){
+    warning.textContent='Please fill all required fields';
+    return;
+  }
+
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  let fee=0,deliveryText='';
+
+  if(delivery==='pickup'){
+    fee=0;
+    deliveryText='📍 PICK-UP (Free) - 924 London Lane, Knoppieslaagte';
+  }else if(delivery==='courier'){
+    fee=getCourierFee(postal,area);
+    deliveryText=`📦 COURIER DELIVERY (R${fee})`;
+  }
+
+  const finalTotal=total+fee;
+
+  const msg=`🆘 *NEW APU ORDER*
+------------------
+${cart.map(i=>`${i.qty}x ${i.name} — R${(i.price*i.qty).toFixed(2)}`).join("\n")}
+------------------
+*SUBTOTAL:* R${total.toFixed(2)}
+${fee>0?`*DELIVERY FEE:* R${fee.toFixed(2)}\n`:''}*TOTAL:* R${finalTotal.toFixed(2)}
+
+📋 *DELIVERY ADDRESS*
+Name: ${name}
+Phone: ${phone}
+Address: ${address}
+Postal Code: ${postal}
+Area: ${area}
+
+${deliveryText}
+
+⏱️ *Note:* Large orders may take longer to process. We will communicate with you via WhatsApp to confirm details and payment.
+
+Awaiting confirmation...`;
+
+  window.open(`https://wa.me/${SELLER_WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank");
+  closeDeliveryForm();
+}
+
+function checkout(){
+  openDeliveryForm();
+}
+
+renderAllProducts();
+
+</script>
+
+</body>
+</html>
