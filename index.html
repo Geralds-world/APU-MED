@@ -554,7 +554,7 @@ header h2{font-size:1.5rem}
 
 <script>
 const SELLER_WHATSAPP = "27723356685";
-const MIN_ORDER = 150;
+const MIN_ORDER = 80;
 const YOCO_BASE_LINK = "https://pay.yoco.com/apocalypse-unit";
 
 /* -------------------- ORDER REFERENCE -------------------- */
@@ -605,7 +605,7 @@ const productCategories = {
     {name:"Triangular Bandage",price:10},
     {name:"Gauze Pads 50x50mm (20pc)",price:15},
     {name:"Elastic Adhesive Bandage",price:28},
-    {name:"Athletic Bandage 50mm",price:25},
+    {name:"Adhesive Bandage 50mm",price:25},
     {name:"Gauze Pads 50x50mm (100pc)",price:30},
     {name:"Kaolin Hemostatic Gauze",price:60}
   ],
@@ -674,7 +674,7 @@ const imageMap = {
   "Sterile Gauze 75x75mm (5pc)": "images/75x75 sterile 5pc.PNG",
   "Kaolin Hemostatic Gauze": "images/hemostatic gauze.PNG",
   "Elastic Adhesive Bandage": "images/Elastic ad bandage.PNG",
-  "Athletic Bandage 50mm": "images/Athletic bandage.PNG",
+  "Adhesive Bandage 50mm": "images/Athletic bandage.PNG",
   "50mm Bandage": "images/all sizes of bandages.PNG",
   "75mm Bandage": "images/all sizes of bandages.PNG",
   "100mm Bandage": "images/all sizes of bandages.PNG",
@@ -965,7 +965,7 @@ function submitDelivery(){
     return;
   }
 
-  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
   let fee=0,deliveryText='';
 
   if(delivery==='pickup'){
@@ -976,30 +976,60 @@ function submitDelivery(){
     deliveryText=`📦 COURIER DELIVERY (R${fee})`;
   }
 
-  const finalTotal=total+fee;
+  const finalTotal=subtotal+fee;
 
-  const msg=`🆘 *NEW APU ORDER*
-------------------
-${cart.map(i=>`${i.qty}x ${i.name} — R${(i.price*i.qty).toFixed(2)}`).join("\n")}
-------------------
-*SUBTOTAL:* R${total.toFixed(2)}
-${fee>0?`*DELIVERY FEE:* R${fee.toFixed(2)}\n`:''}*TOTAL:* R${finalTotal.toFixed(2)}
+  // Check minimum order
+  if(finalTotal<80){
+    warning.textContent='Minimum order is R80. Current total: R'+finalTotal.toFixed(2);
+    warning.style.color='#ef4444';
+    return;
+  }
 
-📋 *DELIVERY ADDRESS*
-Name: ${name}
-Phone: ${phone}
-Address: ${address}
-Postal Code: ${postal}
-Area: ${area}
+  // Show loading state
+  warning.textContent='Processing payment...';
+  warning.style.color='#0ea5a4';
 
-${deliveryText}
+  // Prepare data for backend
+  const paymentData={
+    cart:cart,
+    total:finalTotal,
+    customer:{
+      name:name,
+      phone:phone,
+      address:address,
+      postal:postal,
+      area:area
+    },
+    deliveryInfo:deliveryText
+  };
 
-⏱️ *Note:* Large orders may take longer to process. We will communicate with you via WhatsApp to confirm details and payment.
-
-Awaiting confirmation...`;
-
-  window.open(`https://wa.me/${SELLER_WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank");
-  closeDeliveryForm();
+  // Send to PHP backend
+  fetch('./process_payment.php',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(paymentData)
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.success && data.payment_url){
+      // Send order confirmation to WhatsApp
+      window.open(`https://wa.me/${SELLER_WHATSAPP}?text=${encodeURIComponent(data.whatsapp_message)}`,"_blank");
+      
+      // Redirect to Yoco payment page
+      setTimeout(()=>{
+        window.location.href=data.payment_url;
+      },500);
+      
+      closeDeliveryForm();
+    }else{
+      warning.textContent='Payment error: '+data.error;
+      warning.style.color='#ef4444';
+    }
+  })
+  .catch(err=>{
+    warning.textContent='Error: '+err.message;
+    warning.style.color='#ef4444';
+  });
 }
 
 function checkout(){
