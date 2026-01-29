@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Received - APU</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0ea5a4, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui;
+        }
+        .success-card {
+            background: white;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+        .checkmark {
+            font-size: 80px;
+            color: #10b981;
+            margin-bottom: 20px;
+            animation: bounce 0.6s;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        h1 {
+            color: #0ea5a4;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+        p {
+            color: #475569;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            background: linear-gradient(90deg, #0ea5a4, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .loading {
+            display: none;
+            color: #0ea5a4;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-card">
+        <div class="checkmark">✓</div>
+        <h1>Payment Received!</h1>
+        <p>Thank you for your payment. Your order confirmation is being sent to WhatsApp now...</p>
+        <div class="loading" id="loading">
+            <p>📱 Sending WhatsApp message...</p>
+        </div>
+        <button class="btn" onclick="goHome()">Back to Store</button>
+    </div>
+
+    <script>
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const whatsappUrl = sessionStorage.getItem('apuWhatsAppUrl');
+            
+            if (whatsappUrl) {
+                document.getElementById('loading').style.display = 'block';
+                
+                // Send WhatsApp after 1 second
+                setTimeout(() => {
+                    window.open(whatsappUrl, '_blank');
+                }, 1000);
+            }
+        });
+
+        function goHome() {
+            sessionStorage.removeItem('apuWhatsAppUrl');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

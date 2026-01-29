@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>APU | Emergency & First Aid Supplies</title>
+<script src="https://js.yoco.com/sdk/v1/yoco.js"></script>
 
 
 <style>
@@ -432,15 +433,6 @@ header h2{font-size:1.5rem}
     <div class="products trauma-products" id="traumaList"></div>
   </div>
 
-  <!-- BANDAGES SECTION -->
-  <div class="category-section">
-    <div class="category-header" onclick="toggleCategory(this)">
-      <h3>🩹 Bandages & Gauze</h3>
-      <span class="category-toggle">▼</span>
-    </div>
-    <div class="products bandages-products" id="bandagesList"></div>
-  </div>
-
   <!-- CONSUMABLES SECTION -->
   <div class="category-section">
     <div class="category-header" onclick="toggleCategory(this)">
@@ -466,15 +458,6 @@ header h2{font-size:1.5rem}
       <span class="category-toggle">▼</span>
     </div>
     <div class="products tools-products" id="toolsList"></div>
-  </div>
-
-  <!-- PLASTERS SECTION -->
-  <div class="category-section">
-    <div class="category-header" onclick="toggleCategory(this)">
-      <h3>🩸 Plasters & Dressings</h3>
-      <span class="category-toggle">▼</span>
-    </div>
-    <div class="products plasters-products" id="plastersList"></div>
   </div>
 </section>
 
@@ -552,6 +535,25 @@ header h2{font-size:1.5rem}
   </div>
 </div>
 
+<!-- Item Detail Modal -->
+<div id="itemModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:white;border-radius:10px;width:96%;max-width:600px;max-height:90vh;overflow:auto;position:relative;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+    <button id="itemModalClose" onclick="closeItemModal()" style="position:absolute;right:12px;top:12px;background:#ef4444;color:white;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-weight:700">X</button>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;justify-content:center">
+      <img id="itemModalMainImage" src="" alt="" style="width:180px;height:180px;object-fit:contain;border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:8px;flex-shrink:0">
+      <div id="itemModalContents" style="flex:1;min-width:220px;">
+        <h3 id="itemModalTitle" style="margin:0 0 8px 0;color:#0b2c32"></h3>
+        <p id="itemModalCount" style="margin:0 0 12px 0;color:#0ea5a4;font-weight:700"></p>
+        <div id="itemModalList" style="display:flex;flex-direction:column;gap:2px;margin-bottom:12px"></div>
+        <p id="itemModalDesc" style="color:#334155;margin-bottom:12px"></p>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button id="itemModalAddBtn" class="btn" onclick="addToCartFromModal()">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const SELLER_WHATSAPP = "27723356685";
 const MIN_ORDER = 80;
@@ -580,9 +582,9 @@ const productCategories = {
     {name:"Emergency Roadside Kit - Small (33 items)",price:850}
   ],
   onthego: [
-    {name:"Stings On-The-Go Pack",price:165},
-    {name:"Eye Care On-The-Go Pack",price:165},
-    {name:"CPR On-The-Go Pack",price:165}
+    {name:"Stings On-The-Go Pack",price:175},
+    {name:"Eye Care On-The-Go Pack",price:175},
+    {name:"CPR On-The-Go Pack",price:175}
   ],
   refills: [
     {name:"6 Man Boat Refill",price:80},
@@ -591,21 +593,17 @@ const productCategories = {
   ],
   trauma: [
     {name:"CPR Face Shield / Mask",price:20},
-    {name:"Plastic Splint (Interlocking)",price:20},
-    {name:"Elastic Tourniquet",price:30},
-    {name:"Burnshield Hydrogel 10ml",price:30},
-    {name:"Paragear Military Tourniquet",price:120},
-    {name:"Finger Splints 2pc",price:null,onRequest:true}
-  ],
-  bandages: [
-    {name:"Sterile Gauze 75x75mm (5pc)",price:3},
+    {name:"Sterile Gauze 75x75mm (5pc)",price:5},
     {name:"50mm Bandage",price:3.5},
     {name:"75mm Bandage",price:4},
     {name:"100mm Bandage",price:5},
-    {name:"Triangular Bandage",price:10},
     {name:"Gauze Pads 50x50mm (20pc)",price:15},
+    {name:"Triangular Bandage",price:20},
     {name:"Elastic Adhesive Bandage",price:28},
-    {name:"Adhesive Bandage 50mm",price:25},
+    {name:"Adhesive Bandage 50mm",price:30},
+    {name:"Breathable Dressing Pads (5pc) Approx 6x7cm",price:10},
+    {name:"Assorted Plasters Box 20pc (5 Different Sizes)",price:25},
+    {name:"Neon Plasters Box 40pc",price:25},
     {name:"Gauze Pads 50x50mm (100pc)",price:30},
     {name:"Kaolin Hemostatic Gauze",price:60}
   ],
@@ -624,16 +622,21 @@ const productCategories = {
     {name:"10ml Syringe Luer Lock Box/100",price:200}
   ],
   cooling: [
-    {name:"All Stings Considered Sachet",price:5},
-    {name:"Cooling Patch",price:25},
-    {name:"All Stings Considered Box",price:20},
+    {name:"All Stings Considered Sachet",price:8},
     {name:"Instant Ice Pack",price:20},
+    {name:"Cooling Patch",price:25},
+    {name:"All Stings Considered Box",price:30},
+    {name:"Burnshield Hydrogel 10ml",price:35},
     {name:"Deep Freeze Gel 35g",price:45},
     {name:"Deep Heat Rub 35g",price:65}
   ],
   tools: [
+    {name:"Plastic Splint (Interlocking)",price:30},
     {name:"Tweezers Stainless Steel",price:12},
+    {name:"Elastic Tourniquet",price:30},
     {name:"First Aid Scissors 19cm",price:40},
+    {name:"Finger Splints 2pc",price:null,onRequest:true},
+    {name:"Paragear Military Tourniquet",price:140},
     {name:"Rescue Universal Scissors Plus Holster (6 in 1 Multitool)",price:850}
   ],
   plasters: [
@@ -644,7 +647,7 @@ const productCategories = {
 };
 
 let cart=[];
-let allCategories = ['kits', 'onthego', 'refills', 'trauma', 'bandages', 'consumables', 'cooling', 'tools', 'plasters'];
+let allCategories = ['kits', 'onthego', 'refills', 'trauma', 'consumables', 'cooling', 'tools'];
 
 // Image mapping
 const imageMap = {
@@ -733,7 +736,7 @@ function filterProducts(){
     const container = document.getElementById(containerId);
     
     if(filtered.length > 0){
-      renderProducts(filtered, containerId);
+      renderProducts(filtered, containerId, cat);
       container.parentElement.style.display = 'block';
     } else {
       container.parentElement.style.display = 'none';
@@ -747,11 +750,9 @@ function getCategoryContainerId(cat){
     'onthego': 'onTheGoList',
     'refills': 'refillsList',
     'trauma': 'traumaList',
-    'bandages': 'bandagesList',
     'consumables': 'consumablesList',
     'cooling': 'coolingList',
-    'tools': 'toolsList',
-    'plasters': 'plastersList'
+    'tools': 'toolsList'
   };
   return map[cat];
 }
@@ -774,12 +775,12 @@ function toggleCategory(header){
   products.classList.toggle('collapsed');
 }
 
-function renderProducts(products, containerId){
+function renderProducts(products, containerId, categoryKey){
   const container = document.getElementById(containerId);
-  const isOnTheGo = containerId.includes('onthego');
-  const isTrauma = containerId.includes('trauma');
-  const isBandage = containerId.includes('bandage');
-  const isRefill = containerId.includes('refill');
+  const isOnTheGo = containerId.includes('onthego') || categoryKey === 'onthego';
+  const isTrauma = containerId.includes('trauma') || categoryKey === 'trauma';
+  const isRefill = containerId.includes('refill') || categoryKey === 'refills';
+  const isKit = containerId.includes('kits') || categoryKey === 'kits';
   
   container.innerHTML = products.map((p, idx) => {
     const productId = `${containerId}-${idx}`;
@@ -788,11 +789,11 @@ function renderProducts(products, containerId){
     let productClass = 'product';
     if(isOnTheGo) productClass += ' onthego-item';
     if(isTrauma) productClass += ' trauma-item';
-    if(isBandage) productClass += ' bandage-item';
     if(isRefill) productClass += ' refill-item';
+    if(isKit) productClass += ' kit-item';
     
     let productHTML = `
-      <div class="${productClass}">
+      <div class="${productClass}" data-category="${categoryKey}" data-idx="${idx}" style="position:relative;padding-top:8px">
         <img src="${imageUrl}" alt="${p.name}">
         <h4>${p.name}</h4>
         <strong>${priceDisplay}</strong>`;
@@ -812,6 +813,11 @@ function renderProducts(products, containerId){
     } else {
       productHTML += `<button class="btn" onclick="alert('Please contact us for pricing')">Inquire</button>`;
     }
+
+    // Show description button for kits, refills and on-the-go
+    if(isKit || isRefill || isOnTheGo){
+      productHTML += `<button class="desc-btn" onclick="showItemModal('${categoryKey}', ${idx})" style="position:absolute;top:8px;right:8px;background:rgba(14,165,164,0.85);color:#ffffff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:600">whats inside</button>`;
+    }
     
     productHTML += `</div>`;
     return productHTML;
@@ -823,16 +829,14 @@ function renderAllProducts(){
   renderProductCategory('onthego', 'onTheGoList');
   renderProductCategory('refills', 'refillsList');
   renderProductCategory('trauma', 'traumaList');
-  renderProductCategory('bandages', 'bandagesList');
   renderProductCategory('consumables', 'consumablesList');
   renderProductCategory('cooling', 'coolingList');
   renderProductCategory('tools', 'toolsList');
-  renderProductCategory('plasters', 'plastersList');
 }
 
 function renderProductCategory(categoryKey, containerId){
   const products = productCategories[categoryKey];
-  renderProducts(products, containerId);
+  renderProducts(products, containerId, categoryKey);
 }
 
 function addToCartWithOption(productId, name, price){
@@ -929,6 +933,337 @@ function closeDeliveryForm(){
   document.getElementById('deliveryWarning').textContent='';
 }
 
+// Contents map for kits/refills details
+const contentsMap = {
+  "Animal First Aid Kit": {
+    items: [
+      {name: "Gloves Single Pair Latex Powder Free", qty: 1},
+      {name: "Sample/Vomit Bag", qty: 1},
+      {name: "Sterile Gauze 75x75mm (5pc)", qty: 1},
+      {name: "10ml Syringe Luer Slip", qty: 1},
+      {name: "Activated Charcoal 10g", qty: 1},
+      {name: "75mm Bandage", qty: 1},
+      {name: "Tongue Depressor", qty: 2}
+    ],
+    description: "Basic animal first aid kit contents."
+  },
+
+  "Vehicle First Aid Kit": {
+    items: [
+      {name: "First Aid Kit Hard Case (Red)", qty: 1},
+      {name: "Silver Emergency Blanket", qty: 1},
+      {name: "Instant Ice Pack (100 g)", qty: 1},
+      {name: "Conforming Bandage (roll)", qty: 1},
+      {name: "Cleansing Wipe Pads (pkt)", qty: 2},
+      {name: "Alcohol Pads (pkt)", qty: 10},
+      {name: "Stainless Steel Saber Card", qty: 1},
+      {name: "Sterile Gauze Pads (pkt)", qty: 2},
+      {name: "Triangular Bandage", qty: 1},
+      {name: "Band-aids (pkt)", qty: 10},
+      {name: "Hand-pressing Flashlight", qty: 1},
+      {name: "First Aid Guide", qty: 1},
+      {name: "Tourniquet (roll)", qty: 1},
+      {name: "Tweezers", qty: 1},
+      {name: "Aluminum Alloy Whistle", qty: 1},
+      {name: "First Aid Tape (roll)", qty: 1},
+      {name: "Safety Pins", qty: 10},
+      {name: "Scissors", qty: 1}
+    ],
+    description: "Standard vehicle first aid kit contents."
+  },
+
+  "6 Man Boat First Aid Kit": {
+    items: [
+      {name: "CPR Mouth Piece", qty: 1},
+      {name: "Triangular Bandages Non-Woven", qty: 1},
+      {name: "Examination Gloves - Large (pairs)", qty: 2},
+      {name: "Safety Pins - 10/Set", qty: 1},
+      {name: "Conforming Bandages 75mm", qty: 2},
+      {name: "Conforming Bandages 50mm", qty: 2},
+      {name: "Metal Tweezer", qty: 1},
+      {name: "Plaster Strips - Washproof", qty: 10},
+      {name: "Cotton Wool Balls - 5g", qty: 1},
+      {name: "Antiseptic Solution 100ml", qty: 1},
+      {name: "Scissors - First Aid - 10cm", qty: 1},
+      {name: "First Aid Dressing No. 2", qty: 1},
+      {name: "First Aid Dressing No. 5", qty: 1},
+      {name: "Paracetamol Tablets 10's", qty: 1},
+      {name: "Clear PVC Bag", qty: 1}
+    ],
+    description: "6-man boat kit contents."
+  },
+
+  "6 Man Boat Refill": {
+    items: [
+      {name: "CPR Mouth Piece", qty: 1},
+      {name: "Triangular Bandages Non-Woven", qty: 1},
+      {name: "Examination Gloves - Large (pairs)", qty: 2},
+      {name: "Safety Pins - 10/Set", qty: 1},
+      {name: "Conforming Bandages 75mm", qty: 2},
+      {name: "Conforming Bandages 50mm", qty: 2},
+      {name: "Metal Tweezer", qty: 1},
+      {name: "Plaster Strips - Washproof", qty: 10},
+      {name: "Cotton Wool Balls - 5g", qty: 1},
+      {name: "Antiseptic Solution 100ml", qty: 1},
+      {name: "Scissors - First Aid - 10cm", qty: 1},
+      {name: "First Aid Dressing No. 2", qty: 1},
+      {name: "First Aid Dressing No. 5", qty: 1},
+      {name: "Paracetamol Tablets 10's", qty: 1}
+    ],
+    description: "Same contents as the 6-man boat kit."
+  },
+
+  "Gun & Stab Wound First Aid Kit": {
+    items: [
+      {name: "Chest Wound Seal (Flutter Valve Type)", qty: 1},
+      {name: "CPR Mouth Piece", qty: 1},
+      {name: "Triangular Bandages Non-Woven", qty: 2},
+      {name: "Examination Gloves - Large (pairs)", qty: 2},
+      {name: "Antiseptic Solution 100ml", qty: 1},
+      {name: "Plaster Roll 25mm x 3m", qty: 1},
+      {name: "Gauze Swabs 75mm x 75mm Sterile 5's", qty: 1},
+      {name: "Scissors - First Aid - 16cm", qty: 1},
+      {name: "First Aid Dressing No. 2", qty: 2},
+      {name: "First Aid Dressing No. 3", qty: 2},
+      {name: "First Aid Dressing No. 5", qty: 2},
+      {name: "Cotton Wool Balls 5g", qty: 1},
+      {name: "Clear PVC Bag", qty: 1}
+    ],
+    description: "Gun & stab wound kit contents."
+  },
+
+  "Hikers First Aid Kit": {
+    items: [
+      {name: "Antiseptic Cream - Cetrimide - 25g", qty: 1},
+      {name: "Conforming Bandage 75mm", qty: 1},
+      {name: "CPR Mouth Piece", qty: 1},
+      {name: "Cotton Wool Balls 5g", qty: 1},
+      {name: "First Aid Dressing No. 3", qty: 1},
+      {name: "Gauze Swabs 75x75mm Sterile", qty: 1},
+      {name: "Examination Gloves (pair)", qty: 1},
+      {name: "Lip Care", qty: 1},
+      {name: "Paracetamol Tablets 10's", qty: 1},
+      {name: "Fabric Plaster Strips", qty: 10},
+      {name: "Rescue Blanket - Adult", qty: 1},
+      {name: "Burns Dressing 10x10cm", qty: 1},
+      {name: "First Aid Scissor 10cm", qty: 1},
+      {name: "Safety Pins 12's", qty: 1},
+      {name: "Metal First Aid Tweezer", qty: 1},
+      {name: "Sunblock Sachet", qty: 1},
+      {name: "Triangular Bandage - Disposable", qty: 1},
+      {name: "Water Purification Tablets", qty: 10}
+    ],
+    description: "Hiker-specific compact kit."
+  },
+
+  "Household First Aid Kit": {
+    items: [
+      {name: "Burnshield Hydrogel Sachet 3.5ml", qty: 3},
+      {name: "Burnshield Hydrogel Tube 25ml", qty: 1},
+      {name: "Burnshield Dressing 100x100mm", qty: 1},
+      {name: "Antiseptic Cleansing Wipes", qty: 3},
+      {name: "CPR Mouthpiece", qty: 1},
+      {name: "Eye Pad", qty: 1},
+      {name: "Eye Shield", qty: 1},
+      {name: "Pair of Gloves", qty: 1},
+      {name: "Sterile Gauze 75x75mm", qty: 2},
+      {name: "Plastic Tape 25mm x 5m", qty: 1},
+      {name: "Rescue Blanket", qty: 1},
+      {name: "First Aid Scissors", qty: 1},
+      {name: "Triangular Bandage", qty: 2},
+      {name: "Conform Bandage 50mm", qty: 2},
+      {name: "Conform Bandage 75mm", qty: 1},
+      {name: "Crepe Bandage 50mm", qty: 1},
+      {name: "FAD No.2", qty: 3},
+      {name: "FAD No.3", qty: 3},
+      {name: "FAD No.5", qty: 1},
+      {name: "Anchor Plasters", qty: 5},
+      {name: "Waterproof Plasters", qty: 20},
+      {name: "Wound Closure Strip", qty: 1},
+      {name: "Fabric Roll 25mm x 3m", qty: 1},
+      {name: "Metal Forceps", qty: 1},
+      {name: "Safety Pins", qty: 1},
+      {name: "Post Op Non Woven Wound Dressing + Pad", qty: 2},
+      {name: "Burnshield Pocket Guide", qty: 1}
+    ],
+    description: "Comprehensive household first aid kit contents."
+  },
+
+  "ParaGear Tactical Pack - Basic (20 items)": {
+    items: [
+      {name: "ParaGear Tactical/Military Rotation Tourniquet", qty: 1},
+      {name: "Emergency Trauma Hemorrhage Control Bandage", qty: 1},
+      {name: "Black Nitrile Examination Gloves - Pair", qty: 1},
+      {name: "Rescue/Space Blanket (Adult)", qty: 1},
+      {name: "Rescue Scissors - 19cm", qty: 1},
+      {name: "CPR Mouth Piece", qty: 1},
+      {name: "Transparent Tape 12mm x 5m", qty: 1},
+      {name: "Crepe Bandage 75mm", qty: 1},
+      {name: "Single Loop Eye Pad", qty: 1},
+      {name: "Trauma Pad 10x20cm", qty: 2},
+      {name: "Triangular Bandage - Non-Woven", qty: 1},
+      {name: "Burn Blott 3.5ml Sachet", qty: 1},
+      {name: "Safety Pins - 12/Bunch", qty: 1},
+      {name: "Non-Woven Sterile Gauze Swabs 100x100mm", qty: 1},
+      {name: "Nasopharyngeal Airway FG28", qty: 1},
+      {name: "Optilube Sachet 2.7g", qty: 1},
+      {name: "Wooden Tongue Depressor", qty: 1},
+      {name: "Surgical Skin Marking Pen", qty: 1}
+    ],
+    description: "Tactical pack contents."
+  },
+
+  "Emergency Roadside Kit - Small (33 items)": {
+    items: [
+      {name: "Conforming Bandage 50mm", qty: 1},
+      {name: "Burns Dressing 10x10cm", qty: 1},
+      {name: "CPR Mouth Piece", qty: 1},
+      {name: "Eye Drop Vials 0.4ml", qty: 2},
+      {name: "First Aid Dressing No. 2", qty: 1},
+      {name: "First Aid Dressing No. 3", qty: 1},
+      {name: "Gauze Swabs 75x75mm Sterile 5's", qty: 1},
+      {name: "Gentian Violet 20ml", qty: 1},
+      {name: "Examination Gloves (Pair)", qty: 1},
+      {name: "Fabric Plaster Strips", qty: 10},
+      {name: "Safety Pins 12's", qty: 1},
+      {name: "First Aid Scissors 10cm", qty: 1},
+      {name: "Triangular Bandage Disposable", qty: 2},
+      {name: "Metal First Aid Tweezer", qty: 1},
+      {name: "Antiseptic Solution 50ml", qty: 1},
+      {name: "Jumper Cables", qty: 1},
+      {name: "Tow Rope", qty: 1},
+      {name: "Tyre Weld", qty: 1},
+      {name: "Q20 Spray 150g", qty: 1}
+    ],
+    description: "Roadside emergency kit contents."
+  },
+
+  "Stings On-The-Go Pack": {
+    items: [
+      {name: "Sting-Bee-Gone", qty: 1},
+      {name: "Tweezers Stainless Steel", qty: 1},
+      {name: "Antiseptic Cleansing Wipes", qty: 5},
+      {name: "Assorted Plasters Box 20pc (5 Different Sizes)", qty: 5},
+      {name: "Instant Ice Pack", qty: 1},
+      {name: "Crepe Bandage 75mm", qty: 2},
+      {name: "Gloves Single Pair Latex Powder Free", qty: 1}
+    ],
+    description: "Sting relief on-the-go pack."
+  },
+
+  "Eye Care On-The-Go Pack": {
+    items: [
+      {name: "Eye Wash Bottle", qty: 1},
+      {name: "10ml Saline Pod", qty: 2},
+      {name: "Eye Bath", qty: 1},
+      {name: "Single Eye Pad", qty: 2},
+      {name: "Eye Shield", qty: 1},
+      {name: "Gloves Single Pair Latex Powder Free", qty: 1}
+    ],
+    description: "Eye care on-the-go pack."
+  },
+
+  "CPR On-The-Go Pack": {
+    items: [
+      {name: "CPR Face Shield / Mask", qty: 1},
+      {name: "Gloves Single Pair Latex Powder Free", qty: 1},
+      {name: "Alcohol Swabs 10/packet", qty: 1},
+      {name: "Quick reference guide", qty: 1}
+    ],
+    description: "CPR resuscitation on-the-go pack."
+  },
+
+  "Regulation 3 First Aid Refills": {
+    items: [
+      {name: "CPR Mouth Piece", qty: 2},
+      {name: "Microporous Paper Tape 25mm x 3m", qty: 1},
+      {name: "Triangular Bandages Non-Woven", qty: 4},
+      {name: "Examination Gloves - Large (pairs)", qty: 2},
+      {name: "Examination Gloves - Medium (pairs)", qty: 2},
+      {name: "Safety Pins - 10/Set", qty: 1},
+      {name: "Conforming Bandages 75mm", qty: 4},
+      {name: "Conforming Bandages 100mm", qty: 4},
+      {name: "Tweezers", qty: 1},
+      {name: "Plaster Strips (Standard) 19mm x 76mm", qty: 10},
+      {name: "Cotton Wool Roll (For Splinting)", qty: 1},
+      {name: "Antiseptic Solution 100ml", qty: 1},
+      {name: "Scissors - First Aid - 10cm", qty: 1},
+      {name: "Wooden Splints - Pair", qty: 1},
+      {name: "First Aid Dressing No. 3", qty: 4},
+      {name: "First Aid Dressing No. 5", qty: 4},
+      {name: "Gauze Swabs 100mm x 100mm (Sterile) 5/Pouch", qty: 2},
+      {name: "Swabs Non-Woven 50mm x 50mm (100/Pack)", qty: 1},
+      {name: "Plaster Roll - 25mm x 3m", qty: 1},
+      {name: "Burns Dressing 10cm x 10cm", qty: 1}
+    ],
+    description: "Regulation 3 First Aid refill contents."
+  }
+};
+
+function showItemModal(categoryKey, idx){
+  const product = productCategories[categoryKey] && productCategories[categoryKey][idx];
+  if(!product) return;
+  const titleEl = document.getElementById('itemModalTitle');
+  const countEl = document.getElementById('itemModalCount');
+  const listEl = document.getElementById('itemModalList');
+  const descEl = document.getElementById('itemModalDesc');
+
+  titleEl.textContent = product.name;
+  listEl.innerHTML = '';
+
+  const info = contentsMap[product.name];
+  if(info && Array.isArray(info.items)){
+    let total = 0;
+    info.items.forEach(it => {
+      total += (it.qty||1);
+      const row = document.createElement('div');
+      row.innerHTML = `<strong>${it.qty}x</strong> ${it.name}`;
+      row.style.fontSize = '0.95rem';
+      row.style.lineHeight = '1.2';
+      listEl.appendChild(row);
+    });
+    countEl.textContent = `Total items: ${total}`;
+    descEl.textContent = info.description || '';
+  } else {
+    countEl.textContent = '';
+    descEl.textContent = info && info.description ? info.description : 'Contents list will be available soon.';
+  }
+
+  // store current modal product for add-to-cart
+  document.getElementById('itemModal').dataset.category = categoryKey;
+  document.getElementById('itemModal').dataset.idx = idx;
+  // show main product image
+  const mainImg = document.getElementById('itemModalMainImage');
+  if(mainImg){
+    mainImg.src = getProductImage(product.name);
+    mainImg.alt = product.name;
+  }
+
+  document.getElementById('itemModal').style.display = 'flex';
+}
+
+function closeItemModal(){
+  document.getElementById('itemModal').style.display = 'none';
+}
+
+function addToCartFromModal(){
+  const modal = document.getElementById('itemModal');
+  const categoryKey = modal.dataset.category;
+  const idx = parseInt(modal.dataset.idx,10);
+  const product = productCategories[categoryKey] && productCategories[categoryKey][idx];
+  if(!product) return;
+  if(product.onRequest || product.price === null){
+    alert('This item is available on request. Please contact us for pricing.');
+    return;
+  }
+  const ex = cart.find(x => x.name === product.name);
+  if(ex) ex.qty++; else cart.push({name: product.name, price: product.price, qty:1});
+  renderCart();
+  // On mobile, keep behavior: open cart so user sees item
+  openCart();
+  closeItemModal();
+}
+
 function isMnandiArea(postal,area){
   postal=postal.trim().toLowerCase();
   area=area.trim().toLowerCase();
@@ -1003,26 +1338,27 @@ function submitDelivery(){
     deliveryInfo:deliveryText
   };
 
-  // Send to PHP backend
-  fetch('./process_payment.php',{
+  // Send to PHP backend first to create order
+  fetch('./process_payment_live.php',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(paymentData)
   })
   .then(res=>res.json())
   .then(data=>{
-    if(data.success && data.payment_url){
-      // Send order confirmation to WhatsApp
-      window.open(`https://wa.me/${SELLER_WHATSAPP}?text=${encodeURIComponent(data.whatsapp_message)}`,"_blank");
-      
-      // Redirect to Yoco payment page
-      setTimeout(()=>{
-        window.location.href=data.payment_url;
-      },500);
-      
+    if(data.success && data.whatsapp_url){
+      // Close form
       closeDeliveryForm();
+      
+      // Clear cart after order sent
+      cart = [];
+      renderCart();
+      
+      // Open WhatsApp with order details and Yoco payment link
+      // Use window.location.href for better mobile support
+      window.location.href = data.whatsapp_url;
     }else{
-      warning.textContent='Payment error: '+data.error;
+      warning.textContent='Error: '+(data.error || 'Unknown error');
       warning.style.color='#ef4444';
     }
   })
@@ -1033,6 +1369,8 @@ function submitDelivery(){
 }
 
 function checkout(){
+  // Close cart first so delivery form is visible on mobile
+  closeCart();
   openDeliveryForm();
 }
 
