@@ -30,31 +30,40 @@ $cart = $data['cart'];
 $total = $data['total'];
 $customer = $data['customer'];
 $deliveryInfo = $data['deliveryInfo'] ?? [];
-$orderReference = 'APU-' . time() . '-' . rand(1000, 9999);
 
-// Build WhatsApp message with Yoco payment link
-$whatsappMsg = "🆘 *NEW APU ORDER - PAYMENT REQUIRED*\n";
-$whatsappMsg .= "Order ID: " . $orderReference . "\n";
-$whatsappMsg .= "------------------\n";
+// Generate sequential order number APU-001, APU-002, etc
+$counterFile = 'order_counter.txt';
+$counter = file_exists($counterFile) ? (int)file_get_contents($counterFile) : 0;
+$counter++;
+file_put_contents($counterFile, $counter);
+$orderReference = 'APU-' . str_pad($counter, 3, '0', STR_PAD_LEFT);
 
+// Calculate delivery price (total minus cart items)
+$cartSubtotal = 0;
+foreach ($cart as $item) {
+    $cartSubtotal += $item['price'] * $item['qty'];
+}
+$deliveryPrice = $total - $cartSubtotal;
+
+// Build WhatsApp message
+$whatsappMsg = "*NEW ORDER*\n\n";
+$whatsappMsg .= "*Order Number:* " . $orderReference . "\n\n";
+
+$whatsappMsg .= "*Items:*\n";
 foreach ($cart as $item) {
     $whatsappMsg .= $item['qty'] . "x " . $item['name'] . " — R" . number_format($item['price'] * $item['qty'], 2) . "\n";
 }
 
-$whatsappMsg .= "------------------\n";
+$whatsappMsg .= "\n*Delivery Price:* R" . number_format($deliveryPrice, 2) . "\n";
 $whatsappMsg .= "*TOTAL TO PAY:* R" . number_format($total, 2) . "\n\n";
 
-$whatsappMsg .= "📋 *CUSTOMER INFO*\n";
+$whatsappMsg .= "*Customer Info:*\n";
 $whatsappMsg .= "Name: " . ($customer['name'] ?? 'N/A') . "\n";
 $whatsappMsg .= "Phone: " . ($customer['phone'] ?? 'N/A') . "\n";
-$whatsappMsg .= "Address: " . ($customer['address'] ?? 'N/A') . "\n";
+$whatsappMsg .= "Address: " . ($customer['address'] ?? 'N/A') . "\n\n";
 
-if (!empty($deliveryInfo)) {
-    $whatsappMsg .= "\n📦 " . $deliveryInfo;
-}
-
-$whatsappMsg .= "\n\n💳 *PAYMENT LINK:*\n" . $YOCO_PAYMENT_LINK . "\n";
-$whatsappMsg .= "\n⏳ Please pay and reply with proof of payment. Thanks!";
+$whatsappMsg .= "Thank you for choosing us " . ($customer['name'] ?? 'valued customer') . ", we will send you the payment link shortly!\n\n";
+$whatsappMsg .= "Kind regards\nAPU-MED Team";
 
 // Return success response with WhatsApp link
 echo json_encode([
