@@ -188,7 +188,7 @@ section h3{font-size:1.8rem;margin-bottom:30px;color:#334155}
 }
 .product img{width:100%;height:220px;object-fit:cover;border-radius:8px;margin-bottom:12px}
 .product.onthego-item img{height:320px}
-.product.trauma-item img{height:280px}
+.product.emergency-item img{height:280px}
 .product.bandage-item img{height:280px}
 .product.refill-item img{height:160px}
 .product h4{color:#1e293b;margin:12px 0 8px;font-size:1.05rem;font-weight:600}
@@ -397,6 +397,19 @@ header h2{font-size:1.5rem}
     <button class="clear-search" onclick="clearSearch()">Clear</button>
   </div>
 
+  <!-- Category Filter Buttons -->
+  <div id="categoryButtons" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px;align-items:center">
+    <span style="color:#334155;font-weight:600;margin-right:5px">Filter by:</span>
+    <button onclick="filterByCategory('all')" class="category-btn active-cat" style="padding:8px 16px;background:#0ea5a4;color:#ffffff;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">All</button>
+    <button onclick="filterByCategory('kits')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🎒 First Aid Kits</button>
+    <button onclick="filterByCategory('onthego')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🏃 On-The-Go</button>
+    <button onclick="filterByCategory('refills')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">📋 Refills</button>
+    <button onclick="filterByCategory('emergency')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🚑 Disposable & Emergency</button>
+    <button onclick="filterByCategory('tools')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🔧 Tools</button>
+    <button onclick="filterByCategory('plasters')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🩹 Plasters</button>
+    <button onclick="filterByCategory('tattoo')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🎨 Tattoo Supplies</button>
+  </div>
+
   <!-- KITS SECTION -->
   <div class="category-section">
     <div class="category-header" onclick="toggleCategory(this)">
@@ -424,31 +437,13 @@ header h2{font-size:1.5rem}
     <div class="products refills-products" id="refillsList"></div>
   </div>
 
-  <!-- TRAUMA SECTION -->
+  <!-- DISPOSABLE & EMERGENCY SECTION -->
   <div class="category-section">
     <div class="category-header" onclick="toggleCategory(this)">
-      <h3>🚑 Trauma & Emergency</h3>
+      <h3>🚑 Disposable & Emergency</h3>
       <span class="category-toggle">▼</span>
     </div>
-    <div class="products trauma-products" id="traumaList"></div>
-  </div>
-
-  <!-- CONSUMABLES SECTION -->
-  <div class="category-section">
-    <div class="category-header" onclick="toggleCategory(this)">
-      <h3>💊 Consumables & Supplies</h3>
-      <span class="category-toggle">▼</span>
-    </div>
-    <div class="products consumables-products" id="consumablesList"></div>
-  </div>
-
-  <!-- PAIN & COOLING SECTION -->
-  <div class="category-section">
-    <div class="category-header" onclick="toggleCategory(this)">
-      <h3>❄️ Pain & Cooling</h3>
-      <span class="category-toggle">▼</span>
-    </div>
-    <div class="products cooling-products" id="coolingList"></div>
+    <div class="products emergency-products" id="emergencyList"></div>
   </div>
 
   <!-- TOOLS SECTION -->
@@ -468,6 +463,15 @@ header h2{font-size:1.5rem}
       <span class="category-toggle">▼</span>
     </div>
     <div class="products plasters-products" id="plastersList"></div>
+  </div>
+
+  <!-- TATTOO SUPPLIES SECTION - Hidden by default -->
+  <div class="category-section" id="tattooSection" style="display:none">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🎨 Tattoo Studio Supplies</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products tattoo-products" id="tattooList"></div>
   </div>
 </section>
 
@@ -489,7 +493,12 @@ header h2{font-size:1.5rem}
 <!-- Delivery Address Form Modal -->
 <div id="deliveryModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:200;align-items:center;justify-content:center">
   <div style="background:white;padding:40px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
-    <h2 style="color:#0ea5a4;margin-bottom:25px;text-align:center">Delivery Details</h2>
+    <h2 style="color:#0ea5a4;margin-bottom:15px;text-align:center">Delivery Details</h2>
+    
+    <!-- Payment Information Banner -->
+    <div style="margin-bottom:25px;padding:15px;background:#e0f2fe;border-left:4px solid #0ea5a4;border-radius:6px">
+      <p style="color:#0b2c32;font-size:0.95rem;margin:0;line-height:1.6"><strong>💬 Payment Method:</strong> You will receive a payment link via WhatsApp. We do not handle payments directly on this website. Our team will contact you with the payment link after confirming your delivery details.</p>
+    </div>
     
     <div style="margin-bottom:18px">
       <label style="display:block;margin-bottom:8px;color:#334155;font-weight:600">Full Name *</label>
@@ -603,9 +612,8 @@ const productCategories = {
     {name:"Regulation 7 First Aid Refills",price:null,onRequest:true},
     {name:"First Aid Box (wall mount or hand-held)",price:350}
   ],
-  trauma: [
-    
-    
+  emergency: [
+    // Trauma & Emergency items
     {name:"50mm Bandage",price:3.5},
     {name:"75mm Bandage",price:4},
     {name:"100mm Bandage",price:5},
@@ -618,9 +626,8 @@ const productCategories = {
     {name:"Triangular Bandage",price:20},
     {name:"Adhesive Bandage",price:28},
     {name:"Gauze Pads 50x50mm (100pc)",price:30},
-    {name:"Kaolin Hemostatic Gauze",price:60}
-  ],
-  consumables: [
+    {name:"Kaolin Hemostatic Gauze",price:60},
+    // Consumables & Supplies
     {name:"5ml Syringe Luer Slip",price:1.45},
     {name:"10ml Syringe Luer Slip",price:2.20},
     {name:"Alcohol Swabs 10/packet",price:3.50},
@@ -635,9 +642,8 @@ const productCategories = {
     {name:"Healthease Nitrile Examination Gloves 100/box - Black",price:110,options:["S","M","L"],optionLabel:"Size"},
     {name:"5ml Syringe Luer Slip Box/100",price:135},
     {name:"10ml Syringe Luer Slip Box/100",price:190},
-    {name:"10ml Syringe Luer Lock Box/100",price:200}
-  ],
-  cooling: [
+    {name:"10ml Syringe Luer Lock Box/100",price:200},
+    // Pain & Cooling
     {name:"All Stings Considered Sachet",price:8},
     {name:"Instant Ice Pack",price:20},
     {name:"Cooling Patch",price:25},
@@ -661,17 +667,41 @@ const productCategories = {
   ],
   plasters: [
     {name:"Plasterman - Non Woven Dressing 8x15cm",price:4.50},
-    {name:"Extra long Boo Boo Plaster - 12cm",price:8},
+    {name:"Extra long Boo Boo Plaster - 12cm (singles)",price:8},
     {name:"Breathable Dressing Pads (5pc) Approx 6x7cm",price:10},
     {name:"50pc AirStrip Plaster",price:25},
     {name:"Assorted Plasters Box 20pc (5 Different Sizes)",price:25},
     {name:"Neon Plasters Box 40pc",price:25},
     {name:"Non Woven Plaster 5cm x 5m",price:30}
+  ],
+  tattoo: [
+    {name:"Alcohol Swabs 10/packet",price:3.50},
+    {name:"Gloves Single Pair Latex Powdered",price:4},
+    {name:"Plasterman - Non Woven Dressing 8x15cm",price:4.50},
+    {name:"Gloves Single Pair Latex Powder Free",price:5},
+    {name:"Sterile Gauze 75x75mm (5pc)",price:5},
+    {name:"Cotton Wool Balls (5pc)",price:6.50},
+    {name:"Gauze Pads 50x50mm (20pc)",price:15},
+    {name:"Tweezers Stainless Steel",price:12},
+    {name:"Elastic Adhesive Bandage 2,5cm X 4,5m",price:12,options:["BLACK","DARK ORANGE","WHITE","KHAKI","DARK PINK","PINK","YELLOW","GREEN","PURPLE","DARK BLUE","RED","TURQUOISE","BLUE","BROWN","DARK PURPLE","ORANGE"],optionLabel:"Color"},
+    {name:"Cotton Earbuds (100pc)",price:15},
+    {name:"Gloves pvc plastic 100pc",price:10},
+    {name:"Adhesive Bandage",price:28},
+    {name:"Non Woven Plaster 5cm x 5m",price:30},
+    {name:"First Aid Scissors 19cm",price:40},
+    {name:"Nitrile gloves - pack of 5 pairs",price:25,options:["M","L"],optionLabel:"Size"},
+    {name:"Elastic Adhesive Bandage 5cm x 4.5m",price:20,options:["BLACK","WHITE","KHAKI","DARK PINK","PINK","YELLOW","GREEN","NEON GREEN","PURPLE","RED","BLUE","ORANGE"],optionLabel:"Color"},
+    {name:"Bro Wipes - 6 XL Wipes",price:18},
+    {name:"Gauze Pads 50x50mm (100pc)",price:30},
+    {name:"Latex Gloves (20pc)",price:48,options:["S","M","L"],optionLabel:"Size"},
+    {name:"Hi Care Medical Grade Nitrile Examination Gloves 100/box",price:110,options:["S","M","L"],optionLabel:"Size"},
+    {name:"Healthease Nitrile Examination Gloves 100/box - Black",price:110,options:["S","M","L"],optionLabel:"Size"}
   ]
 };
 
 let cart=[];
-let allCategories = ['kits', 'onthego', 'refills', 'trauma', 'consumables', 'cooling', 'tools', 'plasters'];
+let allCategories = ['kits', 'onthego', 'refills', 'emergency', 'tools', 'plasters', 'tattoo'];
+let activeCategory = 'all';
 
 // Image mapping
 const imageMap = {
@@ -740,7 +770,7 @@ const imageMap = {
   "50pc AirStrip Plaster": "images/50pc airstrip plaster.png",
   "Elastic Adhesive Bandage 2,5cm X 4,5m": "images/Adhesive Bandage 2.5cm x 4.5m.png",
   "Elastic TQ belt holder": "images/Elastic TQ belt holder.png",
-  "Extra long Boo Boo Plaster - 12cm": "images/Extra long Boo Boo Plaster - 12cm.png",
+  "Extra long Boo Boo Plaster - 12cm (singles)": "images/Extra long Boo Boo plaster - 12cm.png",
   "First Aid Box (wall mount or hand-held)": "images/First aid box.png",
   "Non Woven Plaster 5cm x 5m": "images/Non woven plaster - 5cm x 5m.png",
   "Outdoor Aluminum Clips": "images/Outdoor Aluminum Clips.png"
@@ -762,7 +792,11 @@ function filterProducts(){
   const query = searchInput.value.toLowerCase();
   
   if(!query){
-    renderAllProducts();
+    if(activeCategory === 'all'){
+      renderAllProducts();
+    } else {
+      filterByCategory(activeCategory);
+    }
     return;
   }
   
@@ -774,7 +808,8 @@ function filterProducts(){
     const containerId = getCategoryContainerId(cat);
     const container = document.getElementById(containerId);
     
-    if(filtered.length > 0){
+    // Show category only if it matches search AND (no category filter OR category filter matches)
+    if(filtered.length > 0 && (activeCategory === 'all' || activeCategory === cat)){
       renderProducts(filtered, containerId, cat);
       container.parentElement.style.display = 'block';
     } else {
@@ -788,18 +823,76 @@ function getCategoryContainerId(cat){
     'kits': 'kitsList',
     'onthego': 'onTheGoList',
     'refills': 'refillsList',
-    'trauma': 'traumaList',
-    'consumables': 'consumablesList',
-    'cooling': 'coolingList',
+    'emergency': 'emergencyList',
     'tools': 'toolsList',
-    'plasters': 'plastersList'
+    'plasters': 'plastersList',
+    'tattoo': 'tattooList'
   };
   return map[cat];
 }
 
 function clearSearch(){
   searchInput.value = '';
+  activeCategory = 'all';
+  updateCategoryButtons();
   renderAllProducts();
+}
+
+function filterByCategory(category){
+  activeCategory = category;
+  searchInput.value = '';
+  updateCategoryButtons();
+  
+  if(category === 'all'){
+    renderAllProducts();
+  } else if(category === 'tattoo'){
+    // Hide all regular categories and show only tattoo
+    allCategories.forEach(cat => {
+      const containerId = getCategoryContainerId(cat);
+      const container = document.getElementById(containerId);
+      container.parentElement.style.display = 'none';
+    });
+    document.getElementById('tattooSection').style.display = 'block';
+    renderProductCategory('tattoo', 'tattooList');
+  } else {
+    allCategories.forEach(cat => {
+      const containerId = getCategoryContainerId(cat);
+      const container = document.getElementById(containerId);
+      container.parentElement.style.display = cat === category ? 'block' : 'none';
+    });
+    document.getElementById('tattooSection').style.display = 'none';
+    renderProductCategory(category, getCategoryContainerId(category));
+  }
+}
+
+function updateCategoryButtons(){
+  const buttons = document.querySelectorAll('.category-btn');
+  buttons.forEach(btn => {
+    btn.classList.remove('active-cat');
+    btn.style.background = '#e2e8f0';
+    btn.style.color = '#334155';
+  });
+  
+  const activeBtn = Array.from(buttons).find(btn => {
+    const text = btn.textContent.trim().toLowerCase();
+    const catMap = {
+      'all': activeCategory === 'all',
+      '🎒 first aid kits': activeCategory === 'kits',
+      '🏃 on-the-go': activeCategory === 'onthego',
+      '📋 refills': activeCategory === 'refills',
+      '🚑 disposable & emergency': activeCategory === 'emergency',
+      '🔧 tools': activeCategory === 'tools',
+      '🩹 plasters': activeCategory === 'plasters',
+      '🎨 tattoo supplies': activeCategory === 'tattoo'
+    };
+    return catMap[text];
+  });
+  
+  if(activeBtn){
+    activeBtn.classList.add('active-cat');
+    activeBtn.style.background = '#0ea5a4';
+    activeBtn.style.color = '#ffffff';
+  }
 }
 
 function toggleCart(){cartEl.classList.toggle("active")}
@@ -818,7 +911,7 @@ function toggleCategory(header){
 function renderProducts(products, containerId, categoryKey){
   const container = document.getElementById(containerId);
   const isOnTheGo = containerId.includes('onthego') || categoryKey === 'onthego';
-  const isTrauma = containerId.includes('trauma') || categoryKey === 'trauma';
+  const isEmergency = containerId.includes('emergency') || categoryKey === 'emergency';
   const isRefill = containerId.includes('refill') || categoryKey === 'refills';
   const isKit = containerId.includes('kits') || categoryKey === 'kits';
   const isPlaster = containerId.includes('plasters') || categoryKey === 'plasters';
@@ -829,7 +922,7 @@ function renderProducts(products, containerId, categoryKey){
     const imageUrl = getProductImage(p.name);
     let productClass = 'product';
     if(isOnTheGo) productClass += ' onthego-item';
-    if(isTrauma) productClass += ' trauma-item';
+    if(isEmergency) productClass += ' emergency-item';
     if(isRefill) productClass += ' refill-item';
     if(isKit) productClass += ' kit-item';
     if(isPlaster) productClass += ' plaster-item';
@@ -866,12 +959,20 @@ function renderProducts(products, containerId, categoryKey){
 }
 
 function renderAllProducts(){
+  // Show all regular categories, hide tattoo
+  allCategories.forEach(cat => {
+    if(cat !== 'tattoo'){
+      const containerId = getCategoryContainerId(cat);
+      const container = document.getElementById(containerId);
+      container.parentElement.style.display = 'block';
+    }
+  });
+  document.getElementById('tattooSection').style.display = 'none';
+  
   renderProductCategory('kits', 'kitsList');
   renderProductCategory('onthego', 'onTheGoList');
   renderProductCategory('refills', 'refillsList');
-  renderProductCategory('trauma', 'traumaList');
-  renderProductCategory('consumables', 'consumablesList');
-  renderProductCategory('cooling', 'coolingList');
+  renderProductCategory('emergency', 'emergencyList');
   renderProductCategory('tools', 'toolsList');
   renderProductCategory('plasters', 'plastersList');
 }
@@ -1193,6 +1294,17 @@ const contentsMap = {
     description: "Sting relief on-the-go pack."
   },
 
+    "Travel On-The-Go Pack": {
+    items: [
+      {name: "3-Ply Face Masks", qty: 3},
+      {name: "Gloves Pairs", qty: 2},
+      {name: "Clinell Hand Sanitizer Gel", qty: 1},
+      {name: "Clinell Bed Bath Wipes", qty: 1},
+      {name: "Clinell Antibacterial Hand Wipes", qty: 1},
+    ],
+    description: "Travel-friendly on-the-go pack with essentials for minor injuries and emergencies while on the move."
+  },
+
   "Eye Care On-The-Go Pack": {
     items: [
       {name: "Eye Wash Bottle", qty: 1},
@@ -1425,6 +1537,7 @@ function checkout(){
 }
 
 renderAllProducts();
+updateCategoryButtons();
 
 </script>
 
