@@ -459,6 +459,16 @@ header h2{font-size:1.5rem}
     </div>
     <div class="products tools-products" id="toolsList"></div>
   </div>
+
+
+  <!-- TOOLS SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🩹 Plasters</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products plasters-products" id="plastersList"></div>
+  </div>
 </section>
 
 <footer>
@@ -582,6 +592,7 @@ const productCategories = {
     {name:"Emergency Roadside Kit - Small (33 items)",price:850}
   ],
   onthego: [
+    {name:"Travel On-The-Go Pack",price:150},
     {name:"Stings On-The-Go Pack",price:175},
     {name:"Eye Care On-The-Go Pack",price:175},
     {name:"CPR On-The-Go Pack",price:175}
@@ -589,21 +600,23 @@ const productCategories = {
   refills: [
     {name:"6 Man Boat Refill",price:80},
     {name:"Regulation 3 First Aid Refills",price:260},
-    {name:"Regulation 7 First Aid Refills",price:null,onRequest:true}
+    {name:"Regulation 7 First Aid Refills",price:null,onRequest:true},
+    {name:"First Aid Box (wall mount or hand-held)",price:350}
   ],
   trauma: [
-    {name:"CPR Face Shield / Mask",price:20},
-    {name:"Sterile Gauze 75x75mm (5pc)",price:5},
+    
+    
     {name:"50mm Bandage",price:3.5},
     {name:"75mm Bandage",price:4},
     {name:"100mm Bandage",price:5},
+    {name:"Sterile Gauze 75x75mm (5pc)",price:5},
+    {name:"Cotton Wool Balls (5pc)",price:6.5},
     {name:"Gauze Pads 50x50mm (20pc)",price:15},
+    {name:"CPR Face Shield / Mask",price:20},
+    {name:"Elastic Adhesive Bandage 2,5cm X 4,5m",price:12,options:["BLACK","DARK ORANGE","WHITE","KHAKI","DARK PINK","PINK","YELLOW","GREEN","PURPLE","DARK BLUE","RED","TURQUOISE","BLUE","BROWN","DARK PURPLE","ORANGE"],optionLabel:"Color"},
+    {name:"Elastic Adhesive Bandage 5cm x 4.5m",price:20,options:["BLACK","WHITE","KHAKI","DARK PINK","PINK","YELLOW","GREEN","NEON GREEN","PURPLE","RED","BLUE","ORANGE"],optionLabel:"Color"},
     {name:"Triangular Bandage",price:20},
-    {name:"Elastic Adhesive Bandage",price:28},
-    {name:"Adhesive Bandage 50mm",price:30},
-    {name:"Breathable Dressing Pads (5pc) Approx 6x7cm",price:10},
-    {name:"Assorted Plasters Box 20pc (5 Different Sizes)",price:25},
-    {name:"Neon Plasters Box 40pc",price:25},
+    {name:"Adhesive Bandage",price:28},
     {name:"Gauze Pads 50x50mm (100pc)",price:30},
     {name:"Kaolin Hemostatic Gauze",price:60}
   ],
@@ -613,10 +626,13 @@ const productCategories = {
     {name:"Alcohol Swabs 10/packet",price:3.50},
     {name:"Gloves Single Pair Latex Powdered",price:4},
     {name:"Gloves Single Pair Latex Powder Free",price:5},
-    {name:"Cotton Wool Balls (5pc)",price:6.5},
+    {name:"Gloves pvc plastic 100pc",price:10},
     {name:"Cotton Earbuds (100pc)",price:15},
-    {name:"Latex Gloves (20pc)",price:48,options:["XS","S","M","L","XL","XXL"],optionLabel:"Size"},
-    {name:"Hi Care Medical Grade Nitrile Examination Gloves 100/box",price:110,options:["XS","S","M","L","XL","XXL"],optionLabel:"Size"},
+    {name:"Bro Wipes - 6 XL Wipes",price:18},
+    {name:"Nitrile gloves - pack of 5 pairs",price:25,options:["M","L"],optionLabel:"Size"},
+    {name:"Latex Gloves (20pc)",price:48,options:["S","M","L"],optionLabel:"Size"},
+    {name:"Hi Care Medical Grade Nitrile Examination Gloves 100/box",price:110,options:["S","M","L"],optionLabel:"Size"},
+    {name:"Healthease Nitrile Examination Gloves 100/box - Black",price:110,options:["S","M","L"],optionLabel:"Size"},
     {name:"5ml Syringe Luer Slip Box/100",price:135},
     {name:"10ml Syringe Luer Slip Box/100",price:190},
     {name:"10ml Syringe Luer Lock Box/100",price:200}
@@ -631,23 +647,31 @@ const productCategories = {
     {name:"Deep Heat Rub 35g",price:65}
   ],
   tools: [
-    {name:"Plastic Splint (Interlocking)",price:30},
     {name:"Tweezers Stainless Steel",price:12},
+    {name:"Outdoor Aluminum Clips",price:15,options:["GREY","TURQUOISE","GREEN","ORANGE","RED","BLACK"],optionLabel:"Clip Color"},
+    {name:"Plastic Splint (Interlocking)",price:30},
     {name:"Elastic Tourniquet",price:30},
+    {name:"Digital Thermometer - Soft Tip",price:40},
     {name:"First Aid Scissors 19cm",price:40},
+    {name:"Pupil torch / silver",price:55},
+    {name:"Elastic TQ belt holder",price:65},
     {name:"Finger Splints 2pc",price:null,onRequest:true},
     {name:"Paragear Military Tourniquet",price:140},
     {name:"Rescue Universal Scissors Plus Holster (6 in 1 Multitool)",price:850}
   ],
   plasters: [
+    {name:"Plasterman - Non Woven Dressing 8x15cm",price:4.50},
+    {name:"Extra long Boo Boo Plaster - 12cm",price:8},
     {name:"Breathable Dressing Pads (5pc) Approx 6x7cm",price:10},
+    {name:"50pc AirStrip Plaster",price:25},
     {name:"Assorted Plasters Box 20pc (5 Different Sizes)",price:25},
-    {name:"Neon Plasters Box 40pc",price:25}
+    {name:"Neon Plasters Box 40pc",price:25},
+    {name:"Non Woven Plaster 5cm x 5m",price:30}
   ]
 };
 
 let cart=[];
-let allCategories = ['kits', 'onthego', 'refills', 'trauma', 'consumables', 'cooling', 'tools'];
+let allCategories = ['kits', 'onthego', 'refills', 'trauma', 'consumables', 'cooling', 'tools', 'plasters'];
 
 // Image mapping
 const imageMap = {
@@ -660,6 +684,7 @@ const imageMap = {
   "ParaGear Tactical Pack - Basic (20 items)": "images/para gear tac pac.PNG",
   "Household First Aid Kit": "images/Household kit.PNG",
   "Emergency Roadside Kit - Small (33 items)": "images/Roadside kit.PNG",
+  "Travel On-The-Go Pack": "images/Travel On-The-Go Pack.PNG",
   "Stings On-The-Go Pack": "images/Stings on the go.PNG",
   "Eye Care On-The-Go Pack": "images/Eye care on the go.PNG",
   "CPR On-The-Go Pack": "images/CPR on the go.PNG",
@@ -676,8 +701,8 @@ const imageMap = {
   "Gauze Pads 50x50mm (100pc)": "images/gauze 50x50 100.PNG",
   "Sterile Gauze 75x75mm (5pc)": "images/75x75 sterile 5pc.PNG",
   "Kaolin Hemostatic Gauze": "images/hemostatic gauze.PNG",
-  "Elastic Adhesive Bandage": "images/Elastic ad bandage.PNG",
-  "Adhesive Bandage 50mm": "images/Athletic bandage.PNG",
+  "Elastic Adhesive Bandage 5cm x 4.5m": "images/Athletic bandage.PNG",
+  "Adhesive Bandage": "images/Elastic ad bandage.PNG",
   "50mm Bandage": "images/all sizes of bandages.PNG",
   "75mm Bandage": "images/all sizes of bandages.PNG",
   "100mm Bandage": "images/all sizes of bandages.PNG",
@@ -688,8 +713,10 @@ const imageMap = {
   "Deep Freeze Gel 35g": "images/Deep Freeze Gel 35g.PNG",
   "Deep Heat Rub 35g": "images/Deep Heat Rub 35g.PNG",
   "Tweezers Stainless Steel": "images/Tweezers.PNG",
+  "Pupil torch / silver": "images/pupil torch.PNG",
   "First Aid Scissors 19cm": "images/First aid scissors 19cm.PNG",
   "Rescue Universal Scissors Plus Holster (6 in 1 Multitool)": "images/Rescue uni scissors.PNG",
+  "Plasterman - Non Woven Dressing 8x15cm": "images/Plasterman - Non Woven Dressing 8x15cm.png",
   "Breathable Dressing Pads (5pc) Approx 6x7cm": "images/Breathable Dressing Pads (5pc).PNG",
   "Assorted Plasters Box 20pc (5 Different Sizes)": "images/assorted plasters.PNG",
   "Neon Plasters Box 40pc": "images/neon plaster.PNG",
@@ -699,12 +726,24 @@ const imageMap = {
   "10ml Syringe Luer Slip Box/100": "images/10ml Syringe Luer Slip single.PNG",
   "10ml Syringe Luer Lock Box/100": "images/10ml Syringe Luer Lock Box100.PNG",
   "Alcohol Swabs 10/packet": "images/Alcohol Swabs 10packet.PNG",
+  "Gloves pvc plastic 100pc": "images/Gloves pvc plastic 100pc.png",
   "Gloves Single Pair Latex Powdered": "images/Gloves Single Pair Latex Powdered.PNG",
+  "Healthease Nitrile Examination Gloves 100/box - Black": "images/Healthease Nitrile Examination Gloves 100box - Black.png",
   "Gloves Single Pair Latex Powder Free": "images/Gloves Single Pair Latex Powder Free.PNG",
   "Latex Gloves (20pc)": "images/Latex Gloves (20pc).PNG",
   "Cotton Wool Balls (5pc)": "images/Cotton Wool Balls (5pc).PNG",
   "Cotton Earbuds (100pc)": "images/Cotton Earbuds (100pc).PNG",
-  "Hi Care Medical Grade Nitrile Examination Gloves 100/box": "images/Nitrile Examination Gloves 100 box.PNG"
+  "Hi Care Medical Grade Nitrile Examination Gloves 100/box": "images/Nitrile Examination Gloves 100 box.PNG",
+  "Digital Thermometer - Soft Tip": "images/Digital Thermometer - Soft Tip.png",
+  "Bro Wipes - 6 XL Wipes": "images/Bro Wipes - 6 XL Wipes.png",
+  "Nitrile gloves - pack of 5 pairs": "images/Nitrile gloves - pack of 5 pairs.png",
+  "50pc AirStrip Plaster": "images/50pc airstrip plaster.png",
+  "Elastic Adhesive Bandage 2,5cm X 4,5m": "images/Adhesive Bandage 2.5cm x 4.5m.png",
+  "Elastic TQ belt holder": "images/Elastic TQ belt holder.png",
+  "Extra long Boo Boo Plaster - 12cm": "images/Extra long Boo Boo Plaster - 12cm.png",
+  "First Aid Box (wall mount or hand-held)": "images/First aid box.png",
+  "Non Woven Plaster 5cm x 5m": "images/Non woven plaster - 5cm x 5m.png",
+  "Outdoor Aluminum Clips": "images/Outdoor Aluminum Clips.png"
 };
 
 function getProductImage(productName){
@@ -752,7 +791,8 @@ function getCategoryContainerId(cat){
     'trauma': 'traumaList',
     'consumables': 'consumablesList',
     'cooling': 'coolingList',
-    'tools': 'toolsList'
+    'tools': 'toolsList',
+    'plasters': 'plastersList'
   };
   return map[cat];
 }
@@ -781,6 +821,7 @@ function renderProducts(products, containerId, categoryKey){
   const isTrauma = containerId.includes('trauma') || categoryKey === 'trauma';
   const isRefill = containerId.includes('refill') || categoryKey === 'refills';
   const isKit = containerId.includes('kits') || categoryKey === 'kits';
+  const isPlaster = containerId.includes('plasters') || categoryKey === 'plasters';
   
   container.innerHTML = products.map((p, idx) => {
     const productId = `${containerId}-${idx}`;
@@ -791,7 +832,7 @@ function renderProducts(products, containerId, categoryKey){
     if(isTrauma) productClass += ' trauma-item';
     if(isRefill) productClass += ' refill-item';
     if(isKit) productClass += ' kit-item';
-    
+    if(isPlaster) productClass += ' plaster-item';
     let productHTML = `
       <div class="${productClass}" data-category="${categoryKey}" data-idx="${idx}" style="position:relative;padding-top:8px">
         <img src="${imageUrl}" alt="${p.name}">
@@ -832,6 +873,7 @@ function renderAllProducts(){
   renderProductCategory('consumables', 'consumablesList');
   renderProductCategory('cooling', 'coolingList');
   renderProductCategory('tools', 'toolsList');
+  renderProductCategory('plasters', 'plastersList');
 }
 
 function renderProductCategory(categoryKey, containerId){
@@ -1197,7 +1239,15 @@ const contentsMap = {
       {name: "Burns Dressing 10cm x 10cm", qty: 1}
     ],
     description: "Regulation 3 First Aid refill contents."
-  }
+  },
+
+  "First Aid Box (wall mount or hand-held)": {
+    items: [
+      {name: "Keys for the box", qty: 2},
+      {name: "screws for wallmount", qty: 2},
+    ],
+    description: "This is the box only, without contents. Suitable for wall mounting or hand-held use. Please note that the box does not include any first aid items, it's just the container to hold your supplies."
+    }
 };
 
 function showItemModal(categoryKey, idx){
