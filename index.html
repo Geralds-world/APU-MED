@@ -406,6 +406,7 @@ header h2{font-size:1.5rem}
     <button onclick="filterByCategory('refills')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">📋 Refills</button>
     <button onclick="filterByCategory('emergency')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🚑 Disposable & Emergency</button>
     <button onclick="filterByCategory('tools')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🔧 Tools</button>
+    <button onclick="filterByCategory('disinfectants')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🧼 Disinfectants</button>
     <button onclick="filterByCategory('plasters')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🩹 Plasters</button>
     <button onclick="filterByCategory('tattoo')" class="category-btn" style="padding:8px 16px;background:#e2e8f0;color:#334155;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;font-size:0.95rem">🎨 Tattoo Supplies</button>
   </div>
@@ -455,8 +456,16 @@ header h2{font-size:1.5rem}
     <div class="products tools-products" id="toolsList"></div>
   </div>
 
+  <!-- DISINFECTANTS SECTION -->
+  <div class="category-section">
+    <div class="category-header" onclick="toggleCategory(this)">
+      <h3>🧼 Disinfectants</h3>
+      <span class="category-toggle">▼</span>
+    </div>
+    <div class="products disinfectants-products" id="disinfectantsList"></div>
+  </div>
 
-  <!-- TOOLS SECTION -->
+  <!-- PLASTERS SECTION -->
   <div class="category-section">
     <div class="category-header" onclick="toggleCategory(this)">
       <h3>🩹 Plasters</h3>
@@ -604,7 +613,8 @@ const productCategories = {
     {name:"Travel On-The-Go Pack",price:150},
     {name:"Stings On-The-Go Pack",price:175},
     {name:"Eye Care On-The-Go Pack",price:175},
-    {name:"CPR On-The-Go Pack",price:175}
+    {name:"CPR On-The-Go Pack",price:175},
+    {name:"Injuries On-The-Go Pack",price:150}
   ],
   refills: [
     {name:"6 Man Boat Refill",price:80},
@@ -627,6 +637,10 @@ const productCategories = {
     {name:"Adhesive Bandage",price:28},
     {name:"Gauze Pads 50x50mm (100pc)",price:30},
     {name:"Kaolin Hemostatic Gauze",price:60},
+    {name:"16G Hypodermic Needles 100s box",price:70},
+    {name:"18G Healthease Sterile Needles 100s box",price:45},
+    {name:"Sterile Eye Pad Shield",price:15},
+    {name:"Rescue Blanket / singles",price:22},
     // Consumables & Supplies
     {name:"5ml Syringe Luer Slip",price:1.45},
     {name:"10ml Syringe Luer Slip",price:2.20},
@@ -650,7 +664,10 @@ const productCategories = {
     {name:"All Stings Considered Box",price:30},
     {name:"Burnshield Hydrogel 10ml",price:35},
     {name:"Deep Freeze Gel 35g",price:45},
-    {name:"Deep Heat Rub 35g",price:65}
+    {name:"Deep Heat Rub 35g",price:65},
+    {name:"Panado 24 tablets",price:35},
+    {name:"Panado 16 tablets effervescent",price:55},
+    {name:"Panado paediatric syrup strawberry flavor",price:38}
   ],
   tools: [
     {name:"Tweezers Stainless Steel",price:12},
@@ -659,7 +676,7 @@ const productCategories = {
     {name:"Elastic Tourniquet",price:30},
     {name:"Digital Thermometer - Soft Tip",price:40},
     {name:"First Aid Scissors 19cm",price:40},
-    {name:"Pupil torch / silver",price:55},
+    {name:"Pupil torch",price:55,options:["Silver","Black","Orange","Red"],optionLabel:"Color",priceRange:{"Silver":55,"Black":55,"Orange":65,"Red":65}},
     {name:"Elastic TQ belt holder",price:65},
     {name:"Finger Splints 2pc",price:null,onRequest:true},
     {name:"Paragear Military Tourniquet",price:140},
@@ -695,12 +712,20 @@ const productCategories = {
     {name:"Gauze Pads 50x50mm (100pc)",price:30},
     {name:"Latex Gloves (20pc)",price:48,options:["S","M","L"],optionLabel:"Size"},
     {name:"Hi Care Medical Grade Nitrile Examination Gloves 100/box",price:110,options:["S","M","L"],optionLabel:"Size"},
-    {name:"Healthease Nitrile Examination Gloves 100/box - Black",price:110,options:["S","M","L"],optionLabel:"Size"}
+    {name:"Healthease Nitrile Examination Gloves 100/box - Black",price:110,options:["S","M","L"],optionLabel:"Size"},
+    {name:"16G Hypodermic Needles 100s box",price:70},
+    {name:"18G Healthease Sterile Needles 100s box",price:45},
+    {name:"Bioscrub 500ml Antiseptic skin cleanser",price:100},
+    {name:"D-Bac 500ml hand disinfectant",price:95}
+  ],
+  disinfectants: [
+    {name:"Bioscrub 500ml Antiseptic skin cleanser",price:100},
+    {name:"D-Bac 500ml hand disinfectant",price:95}
   ]
 };
 
 let cart=[];
-let allCategories = ['kits', 'onthego', 'refills', 'emergency', 'tools', 'plasters', 'tattoo'];
+let allCategories = ['kits', 'onthego', 'refills', 'emergency', 'tools', 'disinfectants', 'plasters', 'tattoo'];
 let activeCategory = 'all';
 
 // Image mapping
@@ -743,7 +768,17 @@ const imageMap = {
   "Deep Freeze Gel 35g": "images/Deep Freeze Gel 35g.PNG",
   "Deep Heat Rub 35g": "images/Deep Heat Rub 35g.PNG",
   "Tweezers Stainless Steel": "images/Tweezers.PNG",
-  "Pupil torch / silver": "images/pupil torch.PNG",
+  "Pupil torch": "images/pupil torch.png",
+  "Panado 24 tablets": "images/Panado 24 tablets.png",
+  "Panado 16 tablets effervescent": "images/Panado 16 tablets effervescent.png",
+  "Panado paediatric syrup strawberry flavor": "images/Panado paediatric syrup.png",
+  "16G Hypodermic Needles 100s box": "images/16G hypodermic needles.png",
+  "18G Healthease Sterile Needles 100s box": "images/18G Healthease sterile needles.png",
+  "Sterile Eye Pad Shield": "images/Sterile eye pad shield.png",
+  "Rescue Blanket / singles": "images/Rescue Blanket.png",
+  "Injuries On-The-Go Pack": "images/Injuries on the go pack.png",
+  "Bioscrub 500ml Antiseptic skin cleanser": "images/Bioscrub 500ml.png",
+  "D-Bac 500ml hand disinfectant": "images/D-Bac 500ml.png",
   "First Aid Scissors 19cm": "images/First aid scissors 19cm.PNG",
   "Rescue Universal Scissors Plus Holster (6 in 1 Multitool)": "images/Rescue uni scissors.PNG",
   "Plasterman - Non Woven Dressing 8x15cm": "images/Plasterman - Non Woven Dressing 8x15cm.png",
@@ -825,6 +860,7 @@ function getCategoryContainerId(cat){
     'refills': 'refillsList',
     'emergency': 'emergencyList',
     'tools': 'toolsList',
+    'disinfectants': 'disinfectantsList',
     'plasters': 'plastersList',
     'tattoo': 'tattooList'
   };
@@ -882,7 +918,8 @@ function updateCategoryButtons(){
       '📋 refills': activeCategory === 'refills',
       '🚑 disposable & emergency': activeCategory === 'emergency',
       '🔧 tools': activeCategory === 'tools',
-      '🩹 plasters': activeCategory === 'plasters',
+      '� disinfectants': activeCategory === 'disinfectants',
+      '�🩹 plasters': activeCategory === 'plasters',
       '🎨 tattoo supplies': activeCategory === 'tattoo'
     };
     return catMap[text];
@@ -919,6 +956,13 @@ function renderProducts(products, containerId, categoryKey){
   container.innerHTML = products.map((p, idx) => {
     const productId = `${containerId}-${idx}`;
     let priceDisplay = p.onRequest ? "Price on Request" : `R${p.price.toFixed(2)}`;
+    // If there's a priceRange, show the range
+    if(p.priceRange){
+      const prices = Object.values(p.priceRange);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      priceDisplay = `R${minPrice}-R${maxPrice}`;
+    }
     const imageUrl = getProductImage(p.name);
     let productClass = 'product';
     if(isOnTheGo) productClass += ' onthego-item';
@@ -943,7 +987,7 @@ function renderProducts(products, containerId, categoryKey){
     }
     
     if(!p.onRequest){
-      productHTML += `<button class="btn" id="btn-${productId}" onclick="addToCartWithOption('${productId}', '${p.name}', ${p.price})">Add to Cart</button>`;
+      productHTML += `<button class="btn" id="btn-${productId}" onclick="addToCartWithOption('${categoryKey}', ${idx}, '${p.name}')">Add to Cart</button>`;
     } else {
       productHTML += `<button class="btn" onclick="alert('Please contact us for pricing')">Inquire</button>`;
     }
@@ -974,6 +1018,7 @@ function renderAllProducts(){
   renderProductCategory('refills', 'refillsList');
   renderProductCategory('emergency', 'emergencyList');
   renderProductCategory('tools', 'toolsList');
+  renderProductCategory('disinfectants', 'disinfectantsList');
   renderProductCategory('plasters', 'plastersList');
 }
 
@@ -982,7 +1027,12 @@ function renderProductCategory(categoryKey, containerId){
   renderProducts(products, containerId, categoryKey);
 }
 
-function addToCartWithOption(productId, name, price){
+function addToCartWithOption(categoryKey, idx, name){
+  const product = productCategories[categoryKey][idx];
+  const price = product.price;
+  const priceRange = product.priceRange;
+  
+  const productId = `${categoryKey}-${idx}`;
   const btn = document.getElementById(`btn-${productId}`);
   if(btn){
     const originalText = btn.textContent;
@@ -1009,7 +1059,10 @@ function addToCartWithOption(productId, name, price){
   
   if(selectedOption){
     cartItemName = `${name} (${selectedOption})`;
-    if(selectedOption.includes('Lock')){
+    // Check if there's a priceRange for this product
+    if(priceRange && priceRange[selectedOption]){
+      itemPrice = priceRange[selectedOption];
+    } else if(selectedOption.includes('Lock')){
       itemPrice = 200;
     } else if(selectedOption.includes('R190')){
       itemPrice = 190;
